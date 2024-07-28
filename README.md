@@ -7,7 +7,7 @@
 
   `digit_sum(num) = last_digit + digit_sum(num_with_its_last_digit_removed);`
 
-  In other terms, digit_sum(1234) = 4 + digit_sum(123);
+  digit_sum(1234) = 4 + digit_sum(123);
 
   digit_sum(123) = 3 + digit_sum(12);
 
@@ -36,16 +36,24 @@ int main()
 {
     int num;
     cin >> num;
-    cout << digit_sum(num);
+    cout << "Hello world";
+    cout << num;
+    // this is the recursive part when you go down the tree
+    digit_sum(num);
+    // this is the part when you come back up in the tree
     return 0;
 }
 ```
 
 ### Time Complexity of Recursion
 
-1. Compute the number of function calls.
-2. Compute the time complexity of each function.
+1. `Compute the total number of function calls.`
+2. `Compute the time complexity of each function.`
 
-- In the above example, for each digit the function call happens once, so the number of function calls = number of digits(say, n). In each function call, the operations have O(1) time complexity as there's no loop, rather just a simple if statement and a function call.
+- In the above example, for each digit the function call happens once, so the total number of function calls = number of digits(say, n). In each function call, the operations have O(1) time complexity as there's no loop, rather just a simple if statement and a function call.
 
   Hence the total time complexity is given by : O(1 \* n) = O(n)
+
+- If the number is taken to be 'n', then the number of digits will be: log(n) + 1. Then the time complexity will be : O(log(n) \* 1) = O(log(n)).
+
+- Less significant terms and constants are ignored in the Big-O notation. (That's why O(log(n)) in the above example.)
