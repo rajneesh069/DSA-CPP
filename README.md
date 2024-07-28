@@ -57,3 +57,17 @@ int main()
 - If the number is taken to be 'n', then the number of digits will be: log(n) + 1. Then the time complexity will be : O(log(n) \* 1) = O(log(n)).
 
 - Less significant terms and constants are ignored in the Big-O notation. (That's why O(log(n)) in the above example.)
+
+#### Backtracking in Recursion
+
+- Backtracking is simply used to maintain the state of recursion, i.e., for the same function when the recursion comes back up to it from the stack then the variables in the body/parameters need to be same.
+
+- For example, when we pass some string/array using reference then the actual string/array is being modified in each function call hence when the recursion comes back up in the tree to run some code below the call then the actual string/array for that function would have been modified which would result in unexpected behavior. So to reset it to the original state, i.e., to the state in which the recursion started for that string/array we revert the changes.
+
+This preserves the actual state of the recursion and allows us to traverse through the recursive tree properly.
+
+- Maze traversal is the best example for this.
+
+- Or when we pass some array/string/variable and we need to come back up in the function to perform some operation on it then we might need to use backtracking if the operations are needed to be performed on the previous version of the variable, i.e., the one with which the recursion was called.
+
+- `It's nothing different from recursion, just a fancy name.`
