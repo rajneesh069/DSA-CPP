@@ -7,7 +7,7 @@
         "command": "bash",
         "args": [
           "-c",
-          "g++ -o main CP/main.cpp && ./main < CP/input.txt > CP/output.txt && rm -f main"
+          "g++ -o main CP/main.cpp && ./main < CP/input.txt > CP/output.txt"
         ],
         "group": {
           "kind": "build",
