@@ -1,5 +1,7 @@
 ## Recursion
 
+- It breaks large problems into smaller ones, and once we devise a solution for the larger one then it eventually adds upto the solution of large problems.
+
 - Try to write the function in its own terms.
   For example : digit_sum(num)
 
