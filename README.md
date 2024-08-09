@@ -73,3 +73,41 @@ This preserves the actual state of the recursion and allows us to traverse throu
 - Or when we pass some array/string/variable and we need to come back up in the function to perform some operation on it then we might need to use backtracking if the operations are needed to be performed on the previous version of the variable, i.e., the one with which the recursion was called.
 
 - `It's nothing different from recursion, just a fancy name.`
+
+### Combination Sum : Taking the same element multiple times
+
+```cpp
+class Solution {
+private:
+    void solve(vector<int>& candidates, int target, vector<vector<int>>& ans,
+               vector<int>& current, int n, int i) {
+        if (i >= n) {
+            if (target == 0) {
+                ans.push_back(current);
+            }
+            return;
+        }
+
+        // take
+        if (target > 0) { // important line
+            current.push_back(candidates[i]);
+            solve(candidates, target - candidates[i], ans, current, n, i);
+            current.pop_back();
+        }
+
+        // not take
+        solve(candidates, target, ans, current, n, i + 1);
+    }
+
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> ans;
+        vector<int> current;
+        int n = candidates.size();
+        solve(candidates, target, ans, current, n, 0);
+        return ans;
+    }
+};
+```
+
+- In the above question we stop when the target becomes negative, i.e, we can take the elements as many times as we want but if the target becomes negative we stop because then no combination of it would sum upto target.
