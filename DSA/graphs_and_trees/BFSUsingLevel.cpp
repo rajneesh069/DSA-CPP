@@ -1,48 +1,48 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-// 1 based indexing graph
-
-/* Inputs
-4 4
-1 2
-2 3
-2 4
-3 4
-*/
 const int INF = 1e9 + 10;
-
-int bfs(vector<vector<int>>& graph, vector<int>& level, int src) {
-    queue<int> q;
-    q.push(src);
-    level[src] = 0;
+//0-1 BFS for shortest path
+// We use level array because we want to reduce the level upto 0, hence a node could be
+// processed twice.
+int bfs(vector<vector<pair<int, int>>>& graph, vector<int>& level, int n) {
+    deque<int> q;
+    q.push_back(1);
+    level[1] = 0;
     while (!q.empty()) {
         int cur_v = q.front();
-        q.pop();
+        q.pop_front();
         for (auto child : graph[cur_v]) {
-            if (level[child] != INF) continue;
-            q.push(child);
-            level[child] = level[cur_v] + 1;
+            int child_v = child.first;
+            int wt = child.second;
+            if (level[cur_v] + wt < level[child_v]) { // 2 baar weight kam karenge, from 1 to 0.
+                level[child_v] = level[cur_v] + wt;
+                if (wt == 0) {
+                    q.push_front(child_v);
+                }
+                else {
+                    q.push_back(child_v);
+                }
+            }
         }
+
     }
-    return 0;
+    return level[n] == INF ? -1 : level[n];
 }
 
 int main() {
     int n, m;
     cin >> n >> m;
-    vector<vector<int>> graph(n + 1);
+    vector<vector<pair<int, int>>> graph(n + 1);
     vector<int> level(n + 1, INF);
     while (m--) {
         int x, y;
         cin >> x >> y;
-        graph[x].push_back(y);
-        graph[y].push_back(x);
+        if (x == y) continue;
+        graph[x].push_back({ y,0 });
+        graph[y].push_back({ x,1 }); // our edge
     }
 
-    bfs(graph, level, 1);
-    for (int i = 1; i < level.size(); i++) {
-        cout << level[i] << " ";
-    }
+    cout << bfs(graph, level, n);
+
     return 0;
 }
