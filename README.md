@@ -1,3 +1,186 @@
+## Vectors and Pairs in STL
+
+- Vectors are dynamic arrays with no fixed size.
+- v[i] isn't accessible until there's something inside the vector.
+- Pairs are containers used to store related data.
+- When a pair is swapped the whole pair is swapped.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void printVec(vector<int>& v) {  // passed by reference because otherwise it will pass a copy
+    // and that takes O(N) time complexity
+    for (int i = 0; i < v.size(); i++) {
+        cout << v[i] << " ";
+    }
+    cout << endl;
+}
+
+
+int main() {
+    vector<int> v(10, -1); // size = 10, all values = -1
+    vector<int> v1 = v; // makes a copy of v into v1, takes O(N) time complexity
+    vector<int>& v2 = v; // makes a reference variable of v
+    printVec(v); //print the vector
+
+    pair<int, int> p;
+    // p = make_pair(2, 3);
+    p = { 2,3 }; // another way to initialize pair, more handy
+    int a = p.first; // gives the first value
+    int b = p.second; // gives the second value
+
+    // suppose we needed relation between elements of two arrays
+    int arr[3] = { 1,2,3 };
+    int brr[3] = { 4,5,6 };
+    pair<int, int> p1[3];
+    p1[0] = { arr[0],brr[0] };
+    p1[1] = { arr[1],brr[1] };
+    p1[2] = { arr[2],brr[2] };
+
+    swap(p1[0], p1[2]); // can swap easily obviously.
+
+    for (int i = 0; i < 3; i++) {
+        cout << p1[i].first << " " << p1[i].second << endl;
+    }
+
+    return 0;
+}
+```
+
+## Nesting Vectors and Pairs
+
+- Pairs can be nested in the vectors to form vector of pair, where each element is a pair instead of 'int' or 'char' or 'bool'.
+- Vectors can be nested to form 2D dynamic arrays.
+- Remember, that in case of nested vectors each `v[i]` represents a vector, so to access a 2D or 3D vector using `v[i]` there needs to be some vector(s) inside it.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void printVec(vector<pair<int, int>>& v) {
+    cout << "size: " << v.size() << endl;
+    for (int i = 0; i < v.size(); i++) {
+        cout << v[i].first << " " << v[i].second << endl;
+    }
+}
+
+void printVec(vector<int>& v) {
+    cout << "size: " << v.size() << endl;
+    for (int i = 0; i < v.size(); i++) {
+        cout << v[i] << " ";
+    }
+    cout << endl;
+}
+
+
+int main() {
+    // vector of pairs
+    vector<pair<int, int>> v = {
+     {1,2}, {2,3}, {3,4}
+    };
+    printVec(v);
+
+    // array of vectors
+    int N; // number of vectors inside the array
+    cin >> N;
+    vector<int> v1[N];
+    for (int i = 0; i < N; i++) {
+        int n; // size of each vector
+        cin >> n;
+        for (int j = 0; j < n; j++) {
+            int x; // value inside each vector
+            cin >> x;
+            v1[i].push_back(x); // pushing x in the ith vector
+        }
+    }
+    for (int i = 0; i < N; i++) {
+        printVec(v1[i]);
+    }
+
+    vector<vector<int>> v2; // Vector of vectors : v2[i] -> vector
+    int K;
+    cin >> K;
+    // now v2[i] cannot be accessed until there's something inside it.
+    // so either create a temp vector and push everything in it and then
+    // push it in the v2 vector or v2.push_back(vector<int> ());
+    // Both will work
+    for (int i = 0; i < K; i++) {
+        int n;
+        cin >> n;
+        vector<int> temp;
+        for (int j = 0; j < n; j++) {
+            int x;
+            cin >> x;
+            temp.push_back(x);
+        }
+        v2.push_back(temp);
+    }
+
+    // print v2
+    cout << "v2: " << endl;
+    for (int i = 0; i < v2.size(); i++) {
+        printVec(v2[i]);
+    }
+    return 0;
+}
+```
+
+## Iterators in STL
+- Syntax : `container_type :: iterator it`, 'it' is the name of iterator, it could be named anything obviously.
+- Iterators point to the elements of a container.
+- In case of iterators there's a difference between `it++` and `it+1`
+  - For vectors it's the same because vector has contiguous memory allocation,
+    but in case of maps and sets, the memory allocation couldn't be contiguous leading
+    to wrong memory locations, in case of 'it+1', because it will take the iterator
+    to the next memory location, whereas 'it++' or '++it' will take the iterator to the
+    location of the next iterator, that's why we use 'it++' or '++it' instead of
+    'it+1'.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int main() {
+    // iterators point to the elements of a container.
+    vector<int> v = { 2,3,6,7 };
+    for (int i = 0; i < v.size(); i++) {
+        cout << v[i] << " ";
+    }
+    cout << "\n";
+    vector<int> ::iterator it = v.begin(); // v.begin() points to v[0]
+    cout << (*(it + 1)) << endl; // prints the value 3 from v.
+    for (it = v.begin(); it != v.end(); ++it) { //v.end() points to the next position of the last element
+        cout << *(it) << endl;
+    }
+
+    // in case of iterators there's a difference between 'it++' and 'it+1'
+    /*
+        For vectors it's the same because vector has contiguous memory allocation,
+        but in case of maps and sets, the memory allocation couldn't be contiguous leading
+        to wrong memory locations, in case of 'it+1', because it will take the iterator
+        to the next memory location, whereas 'it++' or '++it' will take the iterator to the
+        location of the next iterator, that's why we use 'it++' or '++it' instead of
+        'it+1'.
+
+     */
+
+    vector<pair<int, int>> v_p = {
+        {1,2}, {2,3}, {3,4},{4,5}
+    };
+    vector<pair<int, int>> ::iterator it1;
+    // 'it1' is an iterator that will point to the pairs in the vector
+    for (it1 = v_p.begin(); it1 != v_p.end(); it++) {
+        cout << (it1)->first << " " << it1->second << endl;
+    }
+    for (it1 = v_p.begin(); it1 != v_p.end(); it++) {
+        cout << (*it1).first << " " << (*it1).second << endl;
+    }
+    return 0;
+}
+```
+
 ## Recursion
 
 - It breaks large problems into smaller ones, and once we devise a solution for the larger one then it eventually adds upto the solution of large problems.
