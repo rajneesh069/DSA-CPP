@@ -251,11 +251,13 @@ int main() {
 1. Maps : stores key-value pairs
 2. Normal maps(ordered maps) : sorted order -> implemented using Red Black Trees
 3. Unordered maps : unsorted order.
-4. `iterator+1 cannot be done`, as there's no continguous memory allocation
+4. `*(iterator+1) cannot be done`, as there's no continguous memory allocation
 5. Maps(unordered/ordered) contain unique keys only, if we re-assign a value to the key of a map, it will change the value of that key then.
 
 ### Ordered Maps: Insertion, Deletion and Accessing time is O(logN)
+
 - Worst case, Best Case and Average Case all have O(logN), however it may worsen in case of strings of long length as they need to lexicographically put in the map, then it will depend on string length too
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -373,7 +375,12 @@ int main() {
   jkl 1
 
 ### Unordered Maps : Average Insertion, Deletion and Accessing time is O(1)
+
 - Worst case : O(n)
+- `Use unordered maps wherever possible to reduce time complexity.`
+- Can't use complex data types like pairs as keys because the hash functions aren't defined internally.
+- Basic data types are `int`, `float`, `string` etc. can be used.
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -425,6 +432,126 @@ int main() {
 ```
 
 - Multimaps could be used to store multiple values with a single key. Not frequently used atleast in CP and we can use ordered maps with vector<int/string> as the value to store multiple instances.
+
+## Ordered, Unordered and Multi Sets
+
+### Ordered Set : Accessing, Deletion and Insertion Time is O(logN)
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void print_set(set<string>& s) {
+    for (auto& el : s) {
+        cout << el << " ";
+    }
+    cout << endl;
+}
+
+int main() {
+    // ordered set: Everything is like map's time complexity, i.e., O(logN).
+    // sets only contain unique elements
+    set<string> s;
+    s.insert("abc");
+    s.insert("zsd");
+    s.insert("bcd");
+    // s["abc"] -> it doesn't exist, we use '.find()' method for this.
+    auto it = s.find("abc"); // gives iterator if it exists or returns end iterator if it doesn't.
+    s.erase("abc"); // it also takes iterators
+    if (it != s.end()) s.erase(it);
+    s.clear(); // clears the whole set
+    return 0;
+}
+```
+
+#### Example
+
+- Given N strings, print unique strings in lexicographical order.
+  -Constraints:
+  N <= 10<sup>5</sup>, string.length=100000
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    set<string> s;
+    int N;
+    cin >> N;
+    for (int i = 0; i < N; i++) {
+        string str;
+        cin >> str;
+        s.insert(str);
+    }
+    for (auto& el : s) {
+        cout << el << endl;
+    }
+
+    return 0;
+}
+```
+
+### Unordered Set : Average Accessing, Deletion and Insertion Time is O(1)
+
+- Functions are same like ordered set, just the time complexity is different.
+- Similar to unordered maps, complex data types like pairs/sets/vectors can't be keys.
+- Following is the example and code for unordered set:
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+// Given N strings and Q queries, print yes if the string is present in the query. N <= 10^5, string.length=100000
+
+int main() {
+    unordered_set<string> us;
+    int N;
+    cin >> N;
+    for (int i = 0; i < N; i++) {
+        string s;
+        cin >> s;
+        us.insert(s);
+    }
+    int Q;
+    cin >> Q;
+    while (Q--)
+    {
+        string s;
+        cin >> s;
+        auto it = us.find(s);
+        if (it != us.end()) {
+            cout << "yes" << endl;
+            continue;
+        }
+        cout << "no" << endl;
+
+    }
+
+    return 0;
+}
+```
+
+### Multisets : Allows multiple values, O(logN) time complexity for everything generally.
+
+- Allows multiple keys in the set in sorted manner.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    multiset<string> s;
+    s.insert("abc"); // O(logN)
+    s.insert("bcd");
+    s.insert("abc");
+    s.insert("abc");
+    s.insert("zsdf");
+    auto it = s.find("abc"); // O(logN), returns the iterator of the first instance it finds, else it returns 's.end()'
+    if(it!=s.end()) s.erase(it); // deletes just the first instance of "abc",
+    // which is being pointed by the iterator.
+    s.erase("abc"); // deletes all instances of abc from the set.
+    return 0;
+
+}
+```
 
 # Data Structures and Algorithms
 
