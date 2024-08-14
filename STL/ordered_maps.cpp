@@ -38,7 +38,7 @@ int main() {
         cout << iter->first << " " << iter->second << endl;
     }
     // returns m.end() if the value is not found.
-    m.erase(3); // takes key as well as iterator's value as well
+    m.erase(3); // takes key as well as iterator's value as well, O(logN)
     auto iter1 = m.find(4);
     if (iter1 != m.end()) {
         m.erase(iter1);
