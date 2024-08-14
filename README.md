@@ -464,11 +464,10 @@ int main() {
 }
 ```
 
-#### Example
-
-- Given N strings, print unique strings in lexicographical order.
-  -Constraints:
-  N <= 10<sup>5</sup>, string.length=100000
+- Example
+  - Given N strings, print unique strings in lexicographical order.
+  - Constraints:
+    N <= 10<sup>5</sup>, string.length=100000
 
 ```cpp
 #include <bits/stdc++.h>
@@ -488,6 +487,44 @@ int main() {
     }
 
     return 0;
+}
+```
+
+- Example : [Sets-STL](https://www.hackerrank.com/challenges/cpp-sets/problem?fbclid=IwAR1Z1fv5RnGAqByvADCRUv4pYQAAmQ_zV5rgVVCagY-DneWu6TSWENdncsY)
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    int q;
+    cin >> q;
+    set<int> s;
+    while (q--)
+    {
+        int y, x;
+        cin >> y >> x;
+        if (y == 1) {
+            s.insert(x);
+        }
+        else if (y == 2)
+        {
+            auto it = s.find(x);
+            if (it != s.end()) s.erase(it);
+        }
+        else if (y == 3)
+        {
+            auto it = s.find(x);
+            if (it != s.end()) {
+                cout << "Yes" << endl;
+            }
+            else {
+                cout << "No" << endl;
+            }
+        }
+    }
+    s.clear();
+    return 0;
+
 }
 ```
 
@@ -530,7 +567,7 @@ int main() {
 }
 ```
 
-### Multisets : Allows multiple values, O(logN) time complexity for everything generally.
+### Multisets : Allows multiple same values, O(logN) time complexity for everything generally.
 
 - Allows multiple keys in the set in sorted manner.
 
@@ -553,6 +590,76 @@ int main(){
 }
 ```
 
+Example : [The Monk and Class Marks](https://www.hackerearth.com/problem/algorithm/the-monk-and-class-marks/?fbclid=IwAR09BMLG-1NhqDlVQq0KIzSr8ZTgqrbJmdfnsXc7KnDiphgX5UmbFLoEYjE)
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    int n;
+    cin >> n;
+    multiset<pair<int, string>, function<bool(pair<int, string>, pair<int, string>)>> m(
+        [](const pair<int, string>& a, const pair<int, string>& b) {
+            if (a.first != b.first) {
+                return a.first > b.first;
+            }
+            else {
+                return a.second < b.second;
+            }
+        }
+    );
+    for (int i = 0; i < n; i++) {
+        string name;
+        int marks;
+        cin >> name >> marks;
+        m.insert({ marks, name });
+    }
+
+    for (auto& p : m) {
+        cout << p.second << " " << p.first << endl;
+    }
+
+    m.clear();
+
+
+    return 0;
+
+}
+```
+
+- Example: [Monk and the Magical Candies](https://www.hackerearth.com/practice/data-structures/trees/heapspriority-queues/practice-problems/algorithm/monk-and-the-magical-candy-bags/?fbclid=IwAR2kDiVkEaxu9dkCTCUhzXLuIccNn0Gz3dSfkaSUjlDE6Nb9UHMzt8HNDo4)
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        long long n, k;
+        cin >> n >> k;
+        multiset<long long> m;
+        for (int i = 0; i < n; i++) {
+            long long x;
+            cin >> x;
+            m.insert(x);
+        }
+        long long sum = 0;
+        for (int i = 0; i < k; i++) {
+            auto it = --m.end();
+            sum += *it;
+            m.erase(it);
+            m.insert((*it) / 2);
+        }
+        cout << sum << endl;
+        m.clear();
+    }
+
+    return 0;
+}
+```
 # Data Structures and Algorithms
 
 ## Recursion
