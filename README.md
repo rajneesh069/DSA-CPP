@@ -188,7 +188,7 @@ int main() {
 ## Concise Way of writing iterators using `auto` keyword and range based loops
 
 - 'auto' keyword assumes the data type of a variable automatically.
-- Range based loops can iterate over the elements directly.
+- `Range based loops can iterate over the elements directly. It eliminates the need to dereference an iterator to get the value.`
 - Both of them could be used together in case of containers to make the code concise and neat.
 
 ```cpp
@@ -702,7 +702,7 @@ int main() {
 }
 ```
 
-## Stack and Queues in STL
+## Stack and Queue in STL
 
 - Stack works on LIFO principle and the most handy functions it provides are as follows:
 
@@ -754,7 +754,7 @@ int main() {
 }
 ```
 
-### Examples for Stack and Queues along with concepts that will come in handy later
+### Examples for Stack and Queue along with concepts that will come in handy later
 
 1. [Balanced Brackets](https://leetcode.com/problems/valid-parentheses/description/)
 
@@ -788,10 +788,44 @@ int main() {
 }
 ```
 
-2. [Next Greater Element]()
+2. [Next Greater Element](https://www.hackerrank.com/contests/second/challenges/next-greater-element/problem)
 
 ```cpp
+#include <bits/stdc++.h>
+using namespace std;
 
+vector<int> NGE(vector<int>& v) {
+    stack<int> st;
+    vector<int> nge(v.size());
+    for (int i = 0; i < v.size(); i++) {
+        while (!st.empty() && v[i] > v[st.top()]) {
+            nge[st.top()] = i;
+            st.pop();
+        }
+        st.push(i);
+    }
+    while (!st.empty())
+    {
+        nge[st.top()] = -1;
+        st.pop();
+    }
+    return nge;
+}
+
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) {
+        cin >> v[i];
+    }
+    vector<int> nge = NGE(v);
+    for (int i = 0; i < nge.size(); i++) {
+        cout << v[i] << " " << (nge[i] == -1 ? -1 : v[nge[i]]) << endl;
+    }
+    return 0;
+}
 ```
 
 # Data Structures and Algorithms
