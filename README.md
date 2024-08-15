@@ -435,6 +435,8 @@ int main() {
 
 ## Ordered, Unordered and Multi Sets
 
+- size: to get the size of sets and maps(ordered, unordered and multi)
+
 ### Ordered Set : Accessing, Deletion and Insertion Time is O(logN)
 
 ```cpp
@@ -707,11 +709,13 @@ int main() {
   - top: to retreive(not remove) the topmost element
   - push: to push elements onto the stack
   - pop: to pop the elements off the stack
+  - size: to check the size of the stack
 
 - Queue works on FIFO principle and the most common functions are:
   - front : to retrieve(not remove) the first element in the queue
   - push: to push elements in the back of the queue
   - pop: to pop elements from the front of the queue
+  - size: to check the size of the queue
 
 ```cpp
 #include <bits/stdc++.h>
@@ -725,6 +729,7 @@ int main() {
     s.push(2);
     s.push(3);
     s.push(4);
+    cout<<s.size()<<endl; //gives the size of the stack
     while (!s.empty())
     {
         cout << s.top() << endl;
@@ -737,6 +742,7 @@ int main() {
     q.push("def");
     q.push("ghi");
     q.push("jkl");
+    cout<<q.size()<<endl; //gives the size of the queue
     while (!q.empty())
     {
         cout << q.front() << endl;
@@ -746,6 +752,46 @@ int main() {
 
     return 0;
 }
+```
+
+### Examples for Stack and Queues along with concepts that will come in handy later
+
+1. [Balanced Brackets](https://leetcode.com/problems/valid-parentheses/description/)
+
+```cpp
+    #include <bits/stdc++.h>
+using namespace std;
+
+bool isValid(string s) {
+    stack<char> st;
+    unordered_map<char, int> symbols = { {'[', -1}, {'(',-2}, {'{', -3}, {']', 1}, {')',2}, {'}', 3} };
+    for (char bracket : s)
+    {
+        if (symbols[bracket] < 0) {
+            st.push(bracket);
+        }
+        else {
+            if (st.empty()) return false;
+            char top = st.top();
+            st.pop();
+            if (symbols[top] + symbols[bracket] != 0) return false;
+        }
+    }
+    return st.empty();
+}
+
+// balanced brackets
+int main() {
+
+    cout << isValid("()");
+    return 0;
+}
+```
+
+2. [Next Greater Element]()
+
+```cpp
+
 ```
 
 # Data Structures and Algorithms

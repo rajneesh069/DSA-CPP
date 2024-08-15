@@ -16,6 +16,7 @@ int main() {
     m[3] = "acd";
     m[6]; // even this takes O(logN), and default value is empty string for string type values,
     // and for 'int' and 'float' its 0.
+    cout << m.size()<<endl; //gives the size of the map
     map <int, string> ::iterator it; // iterator for map, inside its a pair.
     for (it = m.begin(); it != m.end(); it++) {
         // 'it < map.end()' doesn't make sense as there's no continuous memory location

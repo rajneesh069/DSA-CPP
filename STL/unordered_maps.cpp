@@ -11,7 +11,7 @@ int main() {
     // because hash functions of these things aren't internally defined
     m[1] = "abc";
     m[3] = "bce";
-
+    cout << m.size() << endl; //gives the size of the map
     //Example: given Q queries and N strings, print the frequency of the strings given in each query.
     unordered_map<string, int> m1;
     int N;

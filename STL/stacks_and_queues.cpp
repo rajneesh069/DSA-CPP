@@ -9,6 +9,7 @@ int main() {
     s.push(2);
     s.push(3);
     s.push(4);
+    cout << s.size() << endl;
     while (!s.empty())
     {
         cout << s.top() << endl;
@@ -21,6 +22,7 @@ int main() {
     q.push("def");
     q.push("ghi");
     q.push("jkl");
+    cout << q.size() << endl;
     while (!q.empty())
     {
         cout << q.front() << endl;

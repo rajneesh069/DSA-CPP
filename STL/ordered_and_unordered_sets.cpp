@@ -15,6 +15,7 @@ int main() {
     s.insert("abc");
     s.insert("zsd");
     s.insert("bcd");
+    cout << s.size() << endl; // gives the size of the set
     // s["abc"] -> it doesn't exist, we use '.find()' method for this.
     auto it = s.find("abc"); // gives iterator if it exists or returns end iterator if it doesn't.
     s.erase("abc"); // it also takes iterators
@@ -22,7 +23,7 @@ int main() {
 
     unordered_set<int> us;
     // Exactly like Unordered map, every function is same with ordered sets but it takes O(1) time complexity on an average.
-
+    cout << us.size() << endl;
 
     return 0;
 }
