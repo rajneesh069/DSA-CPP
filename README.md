@@ -660,6 +660,94 @@ int main() {
     return 0;
 }
 ```
+
+### Nesting in Sets and Maps
+
+- Only ordered sets and maps can be nested with complex data structures which could be compared somehow.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    map<pair<string, string>, vector<int>> m;
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        string fn, ln;
+        int ct;
+        cin >> fn >> ln >> ct;
+        for (int j = 0; j < ct; j++) {
+            int x;
+            cin >> x;
+            m[{fn, ln}].push_back(x);
+        }
+    }
+    for (auto& pr : m) {
+        auto& full_name = pr.first;
+        auto& list = pr.second;
+        cout << full_name.first << " " << full_name.second << endl;
+        cout << list.size() << endl;
+        for (auto& el : list)
+        {
+            cout << el << " ";
+        }
+        cout << endl;
+
+    }
+
+    return 0;
+}
+```
+
+## Stack and Queues in STL
+
+- Stack works on LIFO principle and the most handy functions it provides are as follows:
+
+  - top: to retreive(not remove) the topmost element
+  - push: to push elements onto the stack
+  - pop: to pop the elements off the stack
+
+- Queue works on FIFO principle and the most common functions are:
+  - front : to retrieve(not remove) the first element in the queue
+  - push: to push elements in the back of the queue
+  - pop: to pop elements from the front of the queue
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int main() {
+    // Stack works on LIFO principle
+    stack<int> s; // could be any data structure ofc
+    s.push(1);
+    s.push(2);
+    s.push(3);
+    s.push(4);
+    while (!s.empty())
+    {
+        cout << s.top() << endl;
+        s.pop();
+    }
+
+    // Queue works on FIFO principle
+    queue<string> q; // could be any data structure ofc
+    q.push("abc");
+    q.push("def");
+    q.push("ghi");
+    q.push("jkl");
+    while (!q.empty())
+    {
+        cout << q.front() << endl;
+        q.pop();
+    }
+
+
+    return 0;
+}
+```
+
 # Data Structures and Algorithms
 
 ## Recursion
