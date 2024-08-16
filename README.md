@@ -254,7 +254,7 @@ int main() {
 4. `*(iterator+1) cannot be done`, as there's no continguous memory allocation
 5. Maps(unordered/ordered) contain unique keys only, if we re-assign a value to the key of a map, it will change the value of that key then.
 
-### Ordered Maps: Insertion, Deletion and Accessing time is O(logN)
+### Ordered Maps: Insertion, Deletion and Accessing time complexity is O(logN)
 
 - Worst case, Best Case and Average Case all have O(logN), however it may worsen in case of strings of long length as they need to lexicographically put in the map, then it will depend on string length too
 
@@ -366,6 +366,7 @@ int main() {
   abc
 
 - Output
+
   abc 3
 
   def 1
@@ -374,7 +375,7 @@ int main() {
 
   jkl 1
 
-### Unordered Maps : Average Insertion, Deletion and Accessing time is O(1)
+### Unordered Maps : Average Insertion, Deletion and Accessing time complexity is O(1)
 
 - Worst case : O(n)
 - `Use unordered maps wherever possible to reduce time complexity.`
@@ -437,7 +438,7 @@ int main() {
 
 - size: to get the size of sets and maps(ordered, unordered and multi)
 
-### Ordered Set : Accessing, Deletion and Insertion Time is O(logN)
+### Ordered Sets : Accessing, Deletion and Insertion Time Complexity is O(logN)
 
 ```cpp
 #include <bits/stdc++.h>
@@ -530,7 +531,7 @@ int main() {
 }
 ```
 
-### Unordered Set : Average Accessing, Deletion and Insertion Time is O(1)
+### Unordered Sets : Average Accessing, Deletion and Insertion Time Complexity is O(1)
 
 - Functions are same like ordered set, just the time complexity is different.
 - Similar to unordered maps, complex data types like pairs/sets/vectors can't be keys.
@@ -828,9 +829,9 @@ int main() {
 }
 ```
 
-## Sorting in STL : O(NlogN) &rarr; Time Complexity
+## Sorting(Introsort) in STL : O(NlogN) &rarr; Time Complexity
 
-- `sort()` function takes the starting `address` and the (ending+1) address and a comparator function as well.
+- `sort()` function takes the starting `address` and the `(ending+1) address` and can take a comparator function as well.
 
 1. Sorting on vectors and arrays
 
@@ -1063,6 +1064,7 @@ int main() {
 - If no element is greater than the specified value, it returns the end iterator of the range.
 
 - Example:
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -1077,9 +1079,115 @@ int main(){
         cin >> x >> y;
         m[x] = { y };
     }
-    
+
     auto it_map_upper_bound = m.upper_bound(4);
     if (it_map_upper_bound != m.end()) cout << it_map_upper_bound->first << " " << it_map_upper_bound->second << endl;
+
+    return 0;
+}
+```
+
+### Some inbuilt algorithms and Lambda Functions in C++ STL
+
+- All of them take a range of starting(inclusive) and ending(exclusive) addresses to operate on.
+
+1. min_element() : returns the pointer/iterator of the minimum element in the range.
+2. max_element() : returns the pointer/iterator of the maximum element in the range.
+3. count() : counts the occurence of an element in the given range and returns the count.
+4. find() : returns the iterator/pointer of that element and if not found then returns the iterator/pointer of the next to the last element in the data structure(basically the end iterator/pointer), in the provided range.
+5. reverse() : reverses the elements of a data structure(like arrays, vectors and strings) in the provided range.
+6. accumulate(): sums the elements in the given range and takes the initial sum as the third argument as well.
+
+- Obviously, in case of arrays, instead of iterators we directly use the variable name(say a) for ranges like this : `sort(a, a+n)`, asssuming that there are 'n' elements in the array.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) {
+        cin >> v[i];
+    }
+    // all of these internal algorithms take up a range to operate in on a data structure.
+
+    int min = *min_element(v.begin(), v.end());
+    cout << min << endl;
+
+    int max = *max_element(v.begin(), v.end());
+    cout << max << endl;
+
+    int count_of_an_element = count(v.begin(), v.end(), 2);
+    cout << count_of_an_element << endl;
+
+    int sum = accumulate(v.begin(), v.end(), 0); // initial sum taken to be 0, if it is taken something else, it would be added to the final sum
+    cout << sum << endl;
+
+    auto it = find(v.begin(), v.end(), 6); //returns the iterator/pointer of that element, if not found then of the next to last element
+    if (it != v.end()) cout << *it << endl;
+    else cout << "Element Not Found" << endl;
+
+    // reverses the original data structure
+    reverse(v.begin(), v.end());
+    // comes in handy in case of arrays, vectors and strings especially
+    for (int i = 0; i < n; i++) {
+        cout << v[i] << " ";
+    }
+    cout << endl;
+
+    string s = "dfbhfew";
+    reverse(s.begin() + 2, s.end()); // reverses from 2nd index to the last
+    cout << s << endl;
+
+    return 0;
+}
+```
+
+6. all_of(): returns true only if all the elements satisfy the condition.
+7. any_of(): returns true if atleast one of the elements satisfy the condition.
+8. none_of(): returns true if none of the elements satisfy the condition.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+bool is_positive(int x){
+    return x>0;
+}
+
+int main() {
+
+    vector<int> v = { 2,4,6,7 };
+    //using regular function
+    cout << all_of(v.begin(), v.end(), is_positive) << endl;
+
+    //using lambda function
+    cout << any_of(v.begin(), v.end(), [](int x) {return x > 0;}) << endl;
+    cout << none_of(v.begin(), v.end(), [](int x) {return x > 0;}) << endl;
+
+    return 0;
+}
+```
+
+### Lambda function
+
+- This is a concise way of writing a function and could be assigned to a variable as well, like this:
+
+- Syntax : `[](int a, int b){ return a+b;}`, to call it, write parentheses just to the side of it like this :` [](int a, int b){ return a+b;}()`;
+  - `auto sum = [](int a, int b){ return a+b;};`
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int main() {
+    cout << [](int x, int y) {return x + y;}(2, 3) << endl; // calling the anonymous lambda function
+    auto sum = [](int x, int y) {return x + y;};
+    cout << sum(2, 5) << endl;
 
     return 0;
 }
