@@ -913,7 +913,7 @@ int main() {
     //     }
     // }
 
-    sort(a.begin(), a.end(), should_i_swap); // return whatever you want the 
+    sort(a.begin(), a.end(), should_i_swap); // return whatever you want the
     // comparator function to do
 
     for (int i = 0; i < n; i++) {
@@ -921,6 +921,165 @@ int main() {
     }
     cout << endl;
 
+
+    return 0;
+}
+```
+
+## Upper and Lower Bounds using STL : Works in O(logN) on sorted Data Structures and in O(N) on unsorted ones
+
+### Lower Bound
+
+- Returns the iterator to the first element in the range that is not less than (i.e., greater than or equal to) the specified value.
+- Takes the range of addresses (start: inclusive, end: exclusive) on which the operation needs to be performed, and the value of which the lower bound needs to be found.
+- If no element is greater than or equal to the specified value, it returns the end iterator of the range.
+
+- Lower Bound on Arrays:
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int main() {
+    int n;
+    cin >> n;
+    int a[n];
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+    sort(a, a + n); // works best on sorted data structures
+
+    for (int i = 0; i < n; i++) {
+        cout << a[i] << " ";
+    }
+    cout << endl;
+
+    int* ptr = lower_bound(a, a + n, 26); // finds the pointer/iterator of that value or the value just greater than that
+    if (ptr == (a + n)) {
+        cout << "Not Found" << endl;
+
+    }
+    else {
+        cout << (*ptr) << endl;
+    }
+
+    int* ptr_restricted = lower_bound(a + 1, a + n, 5); // range can be restrictive too
+    if (ptr_restricted == (a + n)) {
+        cout << "Not Found";
+    }
+    else {
+        cout << (*ptr_restricted) << endl;
+    }
+    return 0;
+}
+```
+
+- Lower bound on vectors
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int>a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+    sort(a.begin(), a.end());
+
+    for (int i = 0; i < n; i++) {
+        cout << a[i] << " ";
+    }
+    cout << endl;
+
+    auto it = lower_bound(a.begin(), a.end(), 26); // finds the pointer/iterator of that value or the value just greater than that
+    if (it == (a.end())) {
+        cout << "Not Found" << endl;
+
+    }
+    else {
+        cout << (*it) << endl;
+    }
+
+    auto it_restricted = lower_bound(a.begin(), a.end(), 5); // range can be restrictive too
+    if (it_restricted == (a.end())) {
+        cout << "Not Found";
+    }
+    else {
+        cout << (*it_restricted) << endl;
+    }
+    return 0;
+}
+```
+
+- Lower bound on sets and maps
+  1. Use set.lower_bound() function instead of regular lower_bound() function, same for maps as well.
+  2. Regular lower_bound() works as O(N) in case of sets and maps but map.lower_bound() function works in O(logN) as it uses trees internally to traverse through the map.
+  3. set.lower_bound() or map.lower_bound() just takes the value as input, and returns the iterator of either that value if its present in the set/map or of the first just greater element in it.
+  4. map.lower_bound() works just on the keys of the map and returns the iterator of the value in the map.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int main() {
+    int n;
+    cin >> n;
+    set<int> s;
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        s.insert(x);
+    }
+    // auto it = lower_bound(s.begin(), s.end(), 5); // this is NOT O(logN) but O(N)
+    // for sets use set.lower_bound() function, as it uses tree implementation to traverse
+    auto it_set = s.lower_bound(5);
+    if (it_set != s.end()) cout << *it_set << endl;
+    map<int, int>m;
+    int k;
+    cin >> k;
+    for (int i = 0; i < k; i++) {
+        int x;
+        int y;
+        cin >> x >> y;
+        m[x] = { y };
+    }
+    auto it_map = m.lower_bound(3); // works on keys only!
+    if (it_map != m.end()) cout << (it_map)->first << " " << it_map->second << endl;
+    return 0;
+}
+```
+
+### Upper Bound
+
+- Always returns the iterator of the first greater element than the current element. Works in the same way as lower bound.
+- Returns an iterator to the first element in the range that is greater than the specified value.
+- Takes the range of addresses (start: inclusive, end: exclusive) on which the operation needs to be performed, and the value of which the upper bound needs to be found.
+- If no element is greater than the specified value, it returns the end iterator of the range.
+
+- Example:
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    map<int, int>m;
+    int k;
+    cin >> k;
+    for (int i = 0; i < k; i++) {
+        int x;
+        int y;
+        cin >> x >> y;
+        m[x] = { y };
+    }
+    
+    auto it_map_upper_bound = m.upper_bound(4);
+    if (it_map_upper_bound != m.end()) cout << it_map_upper_bound->first << " " << it_map_upper_bound->second << endl;
 
     return 0;
 }
