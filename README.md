@@ -828,6 +828,104 @@ int main() {
 }
 ```
 
+## Sorting in STL : O(NlogN) &rarr; Time Complexity
+
+- `sort()` function takes the starting `address` and the (ending+1) address and a comparator function as well.
+
+1. Sorting on vectors and arrays
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int main() {
+    //Introsort -> inbuilt sort algorithm = quick sort + heap sort + insertion sort
+    int n;
+    cin >> n;
+    // int a[n];
+    vector<int>a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+    // sort(a + 3, a + n); // takes starting address and (ending+1) address
+    sort(a.begin(), a.end());
+    for (int i = 0; i < n; i++) {
+        cout << a[i] << " ";
+    }
+    cout << endl;
+
+
+    return 0;
+}
+```
+
+2. Sorting with comparator functions
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+//comparator function for bubble sort
+// bool should_i_swap(pair<int, int>a, pair<int, int> b) {
+//     if (a.first != b.first) {
+//         if (a.first > b.first) return true;
+//     }
+//     else {
+//         if (a.second < b.second) return true;
+//     }
+//     return false;
+// }
+
+//comparator function for inbuilt sort function
+// bool should_i_swap(pair<int, int>a, pair<int, int> b) {
+//     if (a.first != b.first) {
+//         if (a.first > b.first) return false;
+//     }
+//     else {
+//         if (a.second < b.second) return false;
+//     }
+//     return true;
+// }
+
+// comparator function for introsort but in a simpler way
+// return whatever you want the comparator function to do!
+bool should_i_swap(pair<int, int>a, pair<int, int> b) {
+    if (a.first != b.first) {
+        return a.first < b.first;
+    }
+    return a.second > b.second;
+}
+
+
+int main() {
+    int n;
+    cin >> n;
+    vector<pair<int, int>>a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i].first >> a[i].second;
+    }
+
+    // Bubble sort in O(n^2)
+    // for (int i = 0; i < n; i++) {
+    //     for (int j = i + 1; j < n; j++) {
+    //         if (should_i_swap(a[i], a[j])) swap(a[i], a[j]);
+    //     }
+    // }
+
+    sort(a.begin(), a.end(), should_i_swap); // return whatever you want the 
+    // comparator function to do
+
+    for (int i = 0; i < n; i++) {
+        cout << a[i].first << " " << a[i].second << endl;
+    }
+    cout << endl;
+
+
+    return 0;
+}
+```
+
 # Data Structures and Algorithms
 
 ## Recursion
