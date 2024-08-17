@@ -1251,8 +1251,123 @@ int main() {
 
 # Data Structures and Algorithms
 
+## Hashing and Pre-Computation
+
+- Formal Definition of hashing: Hashing is a technique used to map data from a large input space to a smaller, fixed-size range of integers (often referred to as "hashes"). `The goal is to efficiently store and retrieve data in a way that allows for quick lookups, insertions, and deletions.` Hashing is commonly used to implement data structures like hash tables, which are `key in solving problems involving frequent queries on large datasets.`
+
+- Formal Definition of Pre-computation : Pre-computation refers to the `process of computing and storing results in advance before they are needed during the actual query or operation phase`. This technique is especially useful in scenarios where the same computation may need to be repeated multiple times.
+
+- Here's an example: We reduced the time complexity by creating a hash array then did the pre-computation(in a frequency array and stored it) till the max size,i.e., 10<sup>5</sup> and simply looked up for the data in our hash vector.
+
+- This reduces the time complexity by a lot, especially for large datasets.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+/*
+Given an array 'a' of N integers. Given Q queries and in each
+query given a number X, print the count of that number in array.
+
+Constraints:
+1<=N<=10^5
+1<=a[i]<=10^7
+1<=Q<=10^5
+ */
+
+int main() {
+    int n;
+    cin >> n;
+    int a[n];
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+    int q;
+    cin >> q;
+    // while (q--) // O(q*n) == O(10^10) => this won't run in one second
+    // {
+    //     int x;
+    //     cin >> x;
+    //     int ct = 0;
+    //     for (int i = 0; i < n; i++) {
+    //         if (a[i] == x) {
+    //             ct++;
+    //         }
+    //     }
+    //     cout << ct << endl;
+    // }
+
+    // Pre-computing the frequencies of the element
+    vector<int> freq(1e7 + 10); // hash vector(or array)
+    for (int i = 0; i < n; i++) { // O(n)
+        freq[a[i]]++; // calculate frequency of each element in advance
+    }
+
+    while (q--) { // O(q)
+        int x;
+        cin >> x;
+        cout << freq[x] << endl;
+    }
+
+    // Total time complexity = O(n+q)
+
+    return 0;
+}
+```
+
+### Prefix sum technique of Precomputation
+
+1. Example 1: Prefix sum on 1D arrays
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+/*
+Given an array 'a' of N integers. Given Q queries and in each query given L
+and R, print sum of the array elements from L to R (both incluive).
+
+Constraints:
+1<=N<=10^5
+1<=a[i]<=10^9
+1<=Q<=10^5
+1<=L,R<=N
+*/
+
+// Use 1-based indexing in case of prefix sum
+int main() {
+    int N;
+    cin >> N;
+    vector<int> a(N + 1);
+    for (int i = 1; i <= N; i++) {
+        cin >> a[i];
+    }
+
+    // pre-compute the prefix-sum in a pf vector, declare it vector<long long>
+    // because of the order of elements of the vector 'a'
+
+    // computing the prefix sum
+    vector<long long> pf(N + 1); // 'long long' because of the nature of the elements of vector 'a'
+    pf[1] = a[0];
+    for (int i = 2; i <= N; i++) {
+        pf[i] = pf[i - 1] + a[i];
+    }
+
+    int q;
+    cin >> q;
+    while (q--) {
+        int l, r;
+        cin >> l >> r;
+        cout << pf[r] - pf[l - 1] << endl;
+    }
+
+    // O(N + Q)
+
+    return 0;
+}
+```
+
 ## Recursion
 
+- To explore all the possibilities &rarr; use recursion.
 - It breaks large problems into smaller ones, and once we devise a solution for the larger one then it eventually adds upto the solution of large problems.
 
 - Try to write the function in its own terms.
