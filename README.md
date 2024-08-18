@@ -1817,3 +1817,207 @@ public:
 ```
 
 - In the above question we stop when the target becomes negative, i.e, we can take the elements as many times as we want but if the target becomes negative we stop because then no combination of it would sum upto target.
+
+## Graphs : Contd. after the Java notes, but in C++
+
+### What is a graph?
+
+- Collection of nodes/vertices and/or edges.
+- Generally in questions, N : Number of vertices and M: Number of edges.
+- And in M lines we are given the edges between nodes(will make more sense in the graph representation section).
+
+Example:
+
+        6 9 -> N = 6, M = 9
+        In rest of the M lines, we are given the configuration of nodes
+        1 3
+        1 5
+        3 5
+        3 4
+        3 6
+        3 2
+        2 6
+        4 6
+        5 6
+
+### Types of graph
+
+1. Undirected : no arrows to a node, i.e., no bi-directional edge.
+2. Directed : edges have arrows, and graphs can be traversed in a specific direction.
+3. Acyclic : graphs with no cycles.
+4. Cyclic : graphs with cycles.
+
+### What are trees?
+
+- Graphs with no cycles. Acyclic undirected graphs are called trees as well.
+- Number of edges(m) = Number of nodes(n) - 1.
+- Root node: Could be any node, we consider rest of the tree hanging from it.
+- Leaf node: Nodes without any children.
+- Depth of a node: Distance of a node from the root node.
+- Height of a node: Max number of edges starting from any leaf node to that node.
+- LCA: The first common node of 2 or more nodes is called lowest common ancestor.
+
+### What are connected components? (Related to graphs)
+
+- For undirected graph:
+  - If from one node, every other node in that component can be traversed, then it's connected component.
+  - Sometimes, multiple connected components together are called a forest, its a graph too but with multiple connected components.
+  - Number of connected Components : The nummber of time DFS runs.
+- For directed graph: Could be cyclic or acyclic depending on the direction
+  - We define strongly connected components here, instead of just connected components.
+  - Strongly connected component : It should be possible to reach at every node from the starting node.
+
+### Graph Representation
+
+- Input:
+
+        6 9
+        1 3
+        1 5
+        3 5
+        3 4
+        3 6
+        3 2
+        2 6
+        4 6
+        5 6
+
+1. Adjacency Matrix
+2. Adjacency List &rarr; mostly used because of less space complexity
+
+   1. Adjacency Matrix
+
+   - Make a matrix of n\*n(n = number of vertices, m = number of edges).
+   - If 1-based graph then make (n+1)\*(n+1).
+   - a[i][j] = 1 && a[j][i] = 1, if i and j are connected, else it's 0 &rarr; for undirected graph.
+   - a[i][j] = 1, if i and j are connected for directed ones(depending on the direction)
+   - if edges have weights, a[i][j] = w &rarr; w is the weight.
+   - Can get and edge and weight between edges in O(1)
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    // adjacency matrix -> too much space complexity(O(N^2))
+    vector<vector<int>>graph(n + 1, vector<int>(n + 1, 0)); // initialized a 2D vector
+    for (int i = 0; i < m; i++) {
+        int v1, v2;
+        cin >> v1 >> v2;
+        graph[v1][v2] = 1;
+        graph[v2][v1] = 1;
+    }
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            cout << graph[i][j] << " ";
+        }
+        cout << "\n";
+    }
+    return 0;
+}
+```
+
+- Output of adjacency matrix:
+
+        0 0 1 0 1 0
+        0 0 1 0 0 1
+        1 1 0 1 1 1
+        0 0 1 0 0 1
+        1 0 1 0 0 1
+        0 1 1 1 1 0
+
+  2. Adjacency List
+
+  - Make number of lists(arrays/vectors) = number of nodes(+1 if 1-based).
+  - In each list store, the nod with which it is connected.
+  - Space Complexity = O(V+2E) ~ O(V+E)
+  - To find weight and edge, we need to run a loop, in O(N).
+
+1. Unweighted graph
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    // adjacency list : O(V+E)
+    vector<vector<int>> graph(n + 1);
+    for (int i = 0; i < m; i++) {
+        int v1, v2;
+        cin >> v1 >> v2;
+        graph[v1].push_back(v2);
+        graph[v2].push_back(v1);
+    }
+
+    // N = 10^5, M<= 10^7
+
+    for (const auto& row : graph) {
+        for (const auto& el : row) {
+            cout << el << " ";
+        }
+        cout << "\n";
+    }
+
+    return 0;
+}
+```
+
+2. Weighted Graph
+
+- Input: last elements are the weights
+
+        6 9
+        1 3 4
+        1 5 3
+        3 5 2
+        3 4 7
+        3 6 8
+        3 2 9
+        2 6 1
+        4 6 2
+        5 6 3
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    // adjacency list : O(V+E)
+    vector<vector<pair<int, int>>> graph(n + 1);
+    for (int i = 0; i < m; i++) {
+        int v1, v2, wt;
+        cin >> v1 >> v2 >> wt;
+        graph[v1].push_back({ v2, wt });
+        graph[v2].push_back({ v1, wt });
+    }
+
+    // N = 10^5, M<= 10^7
+    
+    for (const auto& row : graph) {
+        for (const auto& el : row) {
+            cout << "{node: " << el.first << " wt:" << el.second << "}, ";
+        }
+        cout << "\n";
+    }
+
+    return 0;
+}
+```
+
+- Output:
+
+        {node: 3 wt:4}, {node: 5 wt:3},
+        {node: 3 wt:9}, {node: 6 wt:1},
+        {node: 1 wt:4}, {node: 5 wt:2}, {node: 4 wt:7}, {node: 6 wt:8},{node: 2 wt:9},
+        {node: 3 wt:7}, {node: 6 wt:2},
+        {node: 1 wt:3}, {node: 3 wt:2}, {node: 6 wt:3},
+        {node: 3 wt:8}, {node: 2 wt:1}, {node: 4 wt:2}, {node: 5 wt:3},
