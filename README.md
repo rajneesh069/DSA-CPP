@@ -1316,8 +1316,9 @@ int main() {
 
 ### Prefix sum technique of Precomputation
 
-1. Example 1: Prefix sum on 1D arrays
+1. Prefix sum on 1D arrays
 - Use 1-based indexing the questions of prefix sum
+- To find occurences or sums in a range.
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -1364,7 +1365,56 @@ int main() {
     return 0;
 }
 ```
-2. [Prefix Sum with a twist](https://www.hackerrank.com/challenges/crush/problem)
+2. Prefix sum on 2D arrays
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+/*
+    Given 2D array of N*N integers. Given Q queries and in each query given
+    a,b,c and d print sum of square represented by (a,b) as top left point and
+    (c,d) as top bottom right point.
+
+    Constraints:
+    1<=N<=10^3
+    1<=a[i][j]<=10^9
+    1<=Q<=10^5
+    1<=a,b,c,d<=N
+*/
+
+int main() {
+    int n;
+    cin >> n;
+    vector<vector<int>>v(n + 1, vector<int>(n + 1, 0));
+    vector<vector<long long>>pf(n + 1, vector<long long>(n + 1, 0));
+
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            cin >> v[i][j];
+        }
+    }
+
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            pf[i][j] = v[i][j] + pf[i - 1][j] + pf[i][j - 1] - pf[i - 1][j - 1];
+        }
+    }
+
+    int q;
+    cin >> q;
+    while (q--)
+    {
+        int a, b, c, d;
+        cin >> a >> b >> c >> d;
+        cout << pf[c][d] - pf[a - 1][d] - pf[c][b - 1] + pf[a - 1][b - 1] << endl;
+    }
+
+
+    return 0;
+}
+```
+
+3. [Prefix Sum with a twist](https://www.hackerrank.com/challenges/crush/problem)
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -1404,6 +1454,88 @@ int main() {
     cout << max_el;
     return 0;
 }
+
+```
+
+4. Prefix Sum and Hashing both
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+// find in the range L to R if the string is palindromic?
+/* 
+Input:
+2
+5 5
+abcec
+1 2
+2 5
+3 5
+1 5 
+1 4
+5 5
+aabbc
+1 2
+2 5
+3 5
+1 5
+1 4
+
+Output:
+NO
+NO
+YES
+NO
+NO
+YES
+NO
+YES
+YES
+YES
+
+
+*/
+// prefix sum and hashing
+int main() {
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        int n, q;
+        cin >> n >> q;
+        string s;
+        cin >> s;
+        // hashing
+        vector<vector<int>>v(s.size() + 1, vector<int>(26, 0));
+        for (int i = 0; i < n; i++) {
+            v[i + 1][s[i] - 'a']++;
+        }
+        // prefix sum
+        for (int i = 0; i < 26; i++) {
+            for (int j = 1; j <= n; j++) {
+                v[j][i] += v[j - 1][i];
+            }
+        }
+        while (q--)
+        {
+            int l, r;
+            cin >> l >> r;
+            int oddCt = 0;
+            for (int i = 0; i < 26; i++) {
+                int charCt = v[r][i] - v[l - 1][i];
+                if (charCt % 2 != 0) oddCt++;
+            }
+            if (oddCt > 1) cout << "NO\n";
+            else cout << "YES\n";
+        }
+
+    }
+
+
+    return 0;
+}
+
+
+
 
 ```
 
