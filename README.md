@@ -2001,7 +2001,7 @@ int main() {
     }
 
     // N = 10^5, M<= 10^7
-    
+
     for (const auto& row : graph) {
         for (const auto& el : row) {
             cout << "{node: " << el.first << " wt:" << el.second << "}, ";
@@ -2021,3 +2021,89 @@ int main() {
         {node: 3 wt:7}, {node: 6 wt:2},
         {node: 1 wt:3}, {node: 3 wt:2}, {node: 6 wt:3},
         {node: 3 wt:8}, {node: 2 wt:1}, {node: 4 wt:2}, {node: 5 wt:3},
+
+### Significance of Visited Array
+
+- Helps us in traversing each and every node of a forest/graph.
+- Prevents infinite loops by making the node be visited only once.
+- `Length of visited array = Length of adjacency list = Length of Adjacency Matrix = Number of nodes(if 0-based indexed graph) or Number of nodes+1(if 1-based indexed graph)`
+
+### Depth First Search(DFS)
+
+- `Goes in-depth of the graph/tree and visits/explores every node.`
+- `We do come back to the node from which we started.`
+- `Even if a node has been visited by some other node already, but it would be checked out by the parent node again, i.e., suppose 3 was visited by 2 already, but if 3 is a child of 1, it will atleast be checked out by 1 and then it'll do nothing as it will be visited already.`
+- Uses recursion.
+- Used to find the number of connected components in a graph.
+- Used to find cycles in a graph.
+- Code: Do remember the four areas and their significance in the code
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+void dfs(int vertex, vector<int> g[], vector<bool>& vis) {
+    // take action on vertex after entering the vertex
+    vis[vertex] = true;
+    cout << vertex << "\n";
+    for (int child : g[vertex]) {
+        // take action on child before entering the child node(haven't called dfs yet)
+        cout << "par: " << vertex << ", child: " << child << "\n";
+        if (vis[child]) continue;
+        dfs(child, g, vis);
+        // take action on child after exiting the child node(called dfs on child)
+    }
+    // take action on vertex before exiting the vertex
+}
+
+
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<int> g[n + 1];
+    vector<bool>vis(n + 1, false);
+    for (int i = 0; i < m; i++) {
+        int v1, v2;
+        cin >> v1 >> v2;
+        g[v1].push_back(v2);
+        g[v2].push_back(v1);
+    }
+
+    for (int i = 0; i < n + 1; i++) {
+        if (vis[i]) continue;
+        dfs(i, g, vis);
+    }
+
+    return 0;
+}
+```
+
+- Output:
+
+        1
+        par: 1, child: 3
+        3
+        par: 3, child: 1
+        par: 3, child: 5
+        5
+        par: 5, child: 1
+        par: 5, child: 3
+        par: 5, child: 6
+        6
+        par: 6, child: 3
+        par: 6, child: 2
+        2
+        par: 2, child: 3
+        par: 2, child: 6
+        par: 6, child: 4
+        4
+        par: 4, child: 3
+        par: 4, child: 6
+        par: 6, child: 5
+        par: 3, child: 4
+        par: 3, child: 6
+        par: 3, child: 2
+        par: 1, child: 5
+
