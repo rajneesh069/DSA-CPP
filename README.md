@@ -1317,8 +1317,10 @@ int main() {
 ### Prefix sum technique of Precomputation
 
 1. Prefix sum on 1D arrays
+
 - Use 1-based indexing the questions of prefix sum
 - To find occurences or sums in a range.
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -1365,7 +1367,9 @@ int main() {
     return 0;
 }
 ```
+
 2. Prefix sum on 2D arrays
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -1415,6 +1419,7 @@ int main() {
 ```
 
 3. [Prefix Sum with a twist](https://www.hackerrank.com/challenges/crush/problem)
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -1431,7 +1436,7 @@ int main() {
             cin >> q[i][j];
         }
     }
-    
+
     // Setting the elements cleverly
     for (int i = 0; i < t; i++) {
         int a = q[i][0], b = q[i][1], k = q[i][2];
@@ -1458,11 +1463,12 @@ int main() {
 ```
 
 4. Prefix Sum and Hashing both
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
 // find in the range L to R if the string is palindromic?
-/* 
+/*
 Input:
 2
 5 5
@@ -1470,7 +1476,7 @@ abcec
 1 2
 2 5
 3 5
-1 5 
+1 5
 1 4
 5 5
 aabbc
@@ -1539,10 +1545,136 @@ int main() {
 
 ```
 
+## Number Theory
+
+### Factors and Sum of Divisors
+
+&nbsp;&nbsp;&nbsp;&nbsp;x = p<sub>1</sub><sup>n<sub>1</sub></sup> &times;p<sub>2</sub><sup>n<sub>2</sub></sup> &times;...p<sub>t</sub><sup>n<sub>t</sub></sup>, where p<sub>k</sub> is a prime factor of the number x.
+
+- Count of divisors = (n<sub>1</sub> + 1) &times; (n<sub>2</sub>+1) &times; (n<sub>3</sub>+1)... &times; (n<sub>t</sub>+1)
+- Sum of divisors = ((p<sub>1</sub><sup>n<sub>1</sub>+1</sup>)/(p<sub>1</sub>-1)) + ((p<sub>2</sub><sup>n<sub>2</sub>+1</sup>)/(p<sub>2</sub>-1)) + ....
+
+1. Finding all the factors of a number, their count and sum as well
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int ct = 0;   // count of divisors
+    int sum = 0;  // sum of divisors
+    /* 1. naive approach : O(N) method
+    for (int i = 1; i <= n; i++) {
+        if (n % i == 0) cout << i << endl;
+    }
+    */
+
+    // 2. O(sqrt(n)) method
+    for (int i = 1; i * i <= n; i++) {
+        if (n % i == 0) {
+            cout << i << " " << n / i << "\n";
+            ct++;
+            sum += i;
+            if (n / i != i) {
+                ct++;
+                sum += n / i;
+            }
+        }
+    }
+    cout << "ct: " << ct << ", sum: " << sum << "\n";
+
+
+    return 0;
+}
+```
+
+2. Checking if a number is prime or not
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int main() {
+    int n;
+    cin >> n;
+    bool is_prime = true;
+    // 1. O(N) - naive approach
+    /* for (int i = 2; i < n; i++) {
+        if (n == 1) {
+            is_prime = false;
+            break;
+        }
+        if (n % i == 0) {
+            is_prime = false;
+            break;
+        }
+    } */
+
+   //2. O(sqrt(N))
+    for (int i = 2; i * i <= n; i++) {
+        if (n == 1) {
+            is_prime = false;
+            break;
+        }
+        if (n % i == 0) {
+            is_prime = false;
+            break;
+        }
+    }
+
+    cout << is_prime << "\n";
+
+
+    return 0;
+}
+```
+
+3. Finding all the prime factors of a number
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> prime_factors;
+    // 1. O(N) approach
+    /* for (int i = 2; i <= n; i++) {
+        while (n % i == 0) {
+            prime_factors.push_back(i);
+            n /= i;
+        }
+    } */
+
+   // 2. O(sqrt(N)) approach
+    for (int i = 2; i * i <= n; i++) {
+        while (n % i == 0) {
+            prime_factors.push_back(i);
+            n /= i;
+        }
+    }
+
+    if (n > 1) { // the last prime number which would be left will be caught by this
+        prime_factors.push_back(n);
+    }
+
+    for (int prime : prime_factors) {
+        cout << prime << " ";
+    }
+
+    return 0;
+}
+```
+
 ## Recursion
 
 - To explore all the possibilities &rarr; use recursion.
-- It breaks large problems into smaller ones, and once we devise a solution for the larger one then it eventually adds upto the solution of large problems.
+- It breaks large problems into smaller ones, and once we devise a solution for the smaller one then it eventually adds upto the solution of large problems.
 
 - Try to write the function in its own terms.
   For example : digit_sum(num)
