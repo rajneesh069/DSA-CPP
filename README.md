@@ -2165,6 +2165,7 @@ int main() {
 ```
 
 ### Storing the connected components
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -2216,14 +2217,16 @@ int main() {
     return 0;
 }
 ```
-- Output:
-        1 2 3 5 4 
-        6 7 
-        8 
 
+- Output:
+  1 2 3 5 4
+  6 7
+  8
 
 ### Detecting cycles using DFS
+
 - If there's a cycle, we reach a node which is already visited but it is not the parent node from which we came from.
+
 ```cpp
 // Cycle detection
 /*
@@ -2273,17 +2276,14 @@ int main() {
 }
 ```
 
-### Graph Matrix Problems: Flood Fill Problem
+### Graph Matrix Problems: [Flood Fill Problem](https://leetcode.com/problems/flood-fill/description/)
+
+- Assume all 1's to be the nodes of a graph and that way we'll have components.
+- DFS needs to be done in either 4 directions or 8(including diagonals).
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
-
-/*
-    Matrix Problems in Graph
-    - Assume all 1's to be the nodes of a graph and that way we'll have components.
-    -  DFS needs to be done in either 4 directions or 8(including diagonals).
-
-*/
 
 void dfs(int i, int j, int initialColor, int newColor, vector<vector<int>>& image) {
     int n = image.size();
@@ -2315,4 +2315,117 @@ int main() {
 
     return 0;
 }
+```
+
+## Dynamic Programming
+
+- Recursion &rarr; Memoization(for time complexity optimization) &rarr; Tabulation(for space complexity optimization of stack space)
+- Overlapping sub-problems: we store(`memoize`) the results of sub-problems in a map/table and then simply retrieve it.
+- Tabulation: Bottom-up &rarr; build from base case till the required solution
+
+### Fibonacci Numbers
+
+- Recursive way : Time Complexity &rarr; O(2<sup>N</sup>), Space Complexity &rarr; O(N)
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int fibo(int n) {
+    // recursion
+    if (n < 2) {
+        return n;
+    }
+    return fibo(n - 1) + fibo(n - 2); // recurrence relation
+}
+
+
+int main() {
+
+    cout << fibo(4) << "\n";
+    return 0;
+}
+```
+
+- Memoization: Time Complexity &rarr; O(N), Space Complexity &rarr; O(2N) = Stack Space + Array Space
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+// memoization: Time Complexity -> O(N), Space Complexity -> O(2N) = Stack Space + Array Space
+int f_memo(int n, vector<int>& dp) {
+    if (n <= 1) {
+        return n;
+    }
+    if (dp[n] != -1) return dp[n];
+    return dp[n] = f_memo(n - 1, dp) + f_memo(n - 2, dp);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> dp(n + 1, -1);
+    cout << f_memo(n, dp) << "\n";
+
+
+
+    return 0;
+}
+```
+
+- Tabulation: Eliminating stack space in this case
+  - Time Complexity &rarr; O(N), Space Complexity &rarr; O(N) = Array Space
+  - `Convert the recurrence relation from f(n-1) + f(n-2) &rarr; dp[i-1] + dp[i-2].`
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+//tabulation: Time Complexity -> O(N), Space Complexity -> O(N) = Array Space
+int f_tabulated(int n, vector<int>& dp) {
+    dp[0] = 0; dp[1] = 1;
+    for (int i = 2; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+    return dp[n];
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> dp(n + 1, -1);
+    cout << f_tabulated(n, dp);
+
+    return 0;
+}
+```
+
+- Making the space complexity = O(1), by using `prev`, `prev2` and `curi` pointers &rarr; Remember this pattern as it will be used or its variations would be used at any places
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+// space optimization: Time Complexity -> O(N), Space Complexity -> O(1)
+int f_space_optimized(int n) {
+    int prev2 = 0, prev = 1;
+    if (n < 2) return n;
+    for (int i = 2; i <= n; i++) {
+        int curi = prev2 + prev;
+        prev2 = prev;
+        prev = curi;
+    }
+    return prev;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    cout << f_space_optimized(n) << "\n";
+
+    return 0;
+}
+
 ```
