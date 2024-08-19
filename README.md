@@ -2036,6 +2036,7 @@ int main() {
 - Uses recursion.
 - Used to find the number of connected components in a graph.
 - Used to find cycles in a graph.
+- Time Complexity: O((Number of vertices) + 2\*(Number Of Edges)) ~ O(N+M)
 - Code: Do remember the four areas and their significance in the code
 
 ```cpp
@@ -2107,3 +2108,167 @@ int main() {
         par: 3, child: 2
         par: 1, child: 5
 
+#### Finding Number of Connected Components using DFS
+
+- Input:
+
+        8 5
+        1 2
+        2 3
+        2 4
+        3 5
+        6 7
+
+- Output : 3
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+void dfs(int vertex, vector<int> g[], vector<bool>& vis) {
+    // take action on vertex after entering the vertex
+    vis[vertex] = true;
+    for (int child : g[vertex]) {
+        // take action on child before entering the child node(haven't called dfs yet)
+        if (vis[child]) continue;
+        dfs(child, g, vis);
+        // take action on child after exiting the child node(called dfs on child)
+    }
+    // take action on vertex before exiting the vertex
+}
+
+
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<int> g[n + 1];
+    vector<bool>vis(n + 1, false);
+    for (int i = 0; i < m; i++) {
+        int v1, v2;
+        cin >> v1 >> v2;
+        g[v1].push_back(v2);
+        g[v2].push_back(v1);
+    }
+    int count = 0;
+    for (int i = 1; i < n + 1; i++) {
+        if (vis[i]) continue;
+        count++;
+        dfs(i, g, vis);
+    }
+
+    cout << count << "\n";
+
+    return 0;
+}
+```
+
+### Storing the connected components
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+void dfs(int vertex, vector<int> g[], vector<bool>& vis, vector<int>& ccc) {
+    // take action on vertex after entering the vertex
+    vis[vertex] = true;
+    ccc.push_back(vertex);
+    for (int child : g[vertex]) {
+        // take action on child before entering the child node(haven't called dfs yet)
+        if (vis[child]) continue;
+        dfs(child, g, vis, ccc);
+        // take action on child after exiting the child node(called dfs on child)
+    }
+    // take action on vertex before exiting the vertex
+}
+
+
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<int> g[n + 1];
+    vector<bool>vis(n + 1, false);
+    vector<vector<int>> cc;
+    for (int i = 0; i < m; i++) {
+        int v1, v2;
+        cin >> v1 >> v2;
+        g[v1].push_back(v2);
+        g[v2].push_back(v1);
+    }
+    int count = 0;
+    for (int i = 1; i < n + 1; i++) {
+        if (vis[i]) continue;
+        vector<int> ccc; // initialize a new current connected component vector
+        count++;
+        dfs(i, g, vis, ccc);
+        cc.push_back(ccc); // push it back after the dfs completes for each connected component
+    }
+
+    for (auto& row : cc) {
+        for (auto& el : row) {
+            cout << el << " ";
+        }
+        cout << "\n";
+    }
+
+    return 0;
+}
+```
+- Output:
+        1 2 3 5 4 
+        6 7 
+        8 
+
+
+### Detecting cycles using DFS
+- If there's a cycle, we reach a node which is already visited but it is not the parent node from which we came from.
+```cpp
+// Cycle detection
+/*
+If there's a cycle, we reach a node which is already visited but it is not the
+parent node from which we came from.
+*/
+#include <bits/stdc++.h>
+using namespace std;
+
+bool dfs(int v, int par, vector<int>g[], vector<bool>& vis) {
+    vis[v] = true;
+    bool does_loop_exist = false;
+    for (int child : g[v]) {
+        if (vis[child] && child == par) continue;
+        if (vis[child] && child != par) {
+            return true;
+        };
+        does_loop_exist |= dfs(child, v, g, vis);
+    }
+    return does_loop_exist;
+}
+
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<int>g[n + 1];
+    for (int i = 0; i < m; i++) {
+        int v1, v2;
+        cin >> v1 >> v2;
+        g[v1].push_back(v2);
+        g[v2].push_back(v1);
+    }
+
+    vector<bool>vis(n + 1, false);
+    for (int i = 0; i < vis.size(); i++) {
+        if (vis[i]) continue;
+        if (dfs(i, 0, g, vis)) {
+            cout << "true" << "\n";
+            return 0;
+        };
+    }
+
+    cout << "false" << "\n";
+
+    return 0;
+}
+```
