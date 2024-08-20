@@ -2323,9 +2323,12 @@ int main() {
 
 ## Dynamic Programming
 
-- Recursion &rarr; Memoization(for time complexity optimization) &rarr; Tabulation(for space complexity optimization of stack space) &rarr; Space Optimization to O(1)
-- Overlapping sub-problems: we store(`memoize`) the results of sub-problems in a map/table and then simply retrieve it.
-- Tabulation: Bottom-up &rarr; build from base case till the required solution
+- Recursion &rarr; Memoization(for time complexity optimization) &rarr; Tabulation(for eliminating space complexity of the stack space) &rarr; Space Optimization to O(1)
+- Overlapping sub-problems: we store(`memoize`) the results of sub-problems in a map/table and then simply retrieve it, when they overlap.
+- Memoization: Top&rarr;Down &rarr; build from the top(required solution) to the base case
+- Tabulation: Bottom&rarr;up &rarr; build from base case till the required solution
+- Space Optimization: Eliminating the `dp` array altogether and make it O(1).
+  - If there is (index-1) and (index-2) involved, we can always optimize the space.
 
 ### Fibonacci Numbers
 
@@ -2450,7 +2453,9 @@ Recursion helps you explore all the possibilities.
    - Count all ways: Sum up all the things
    - Min(of all things): Find Min
    - Max(of all things): Find Max
+
 - Example 1: [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/description/)
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -2512,6 +2517,8 @@ int main() {
 ```
 
 - Example 2: [Frog Jump](https://www.geeksforgeeks.org/problems/geek-jump/1)
+  - If there is (index-1) and (index-2) involved, we can always optimize the space.
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -2563,7 +2570,70 @@ int main() {
    // Express the question in terms of an index
    // Then do everything with the index as per the question
    // Think of the edge cases, like ind == 1, in this case.
-   // Then return the minimum of the things you did on the index 
+   // Then return the minimum of the things you did on the index
+    return 0;
+}
+```
+
+- Example 3: [Frog Jump with K steps](https://atcoder.jp/contests/dp/tasks/dp_b)
+- It demonstrates how 2 loops are required in the tabulated format.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int jump_with_k_steps(int n, int k, vector<int>& arr) {
+    if (n == 0) return 0;
+    int min_steps = INT_MAX;
+    for (int i = 1; i <= k; i++) {
+        if (n - i >= 0) {
+            int jump = jump_with_k_steps(n - i, k, arr);
+            min_steps = (min_steps, jump);
+        }
+    }
+    return min_steps;
+}
+
+int jump_with_k_steps_memoized(int i, int k, vector<int>& arr, vector<int>& dp) {
+    if (i == 0) return 0;
+    if (dp[i] != -1) return dp[i];
+    int min_steps = INT_MAX;
+    for (int j = 1; j <= k; j++) {
+        if (i - j >= 0) {
+            int jump = jump_with_k_steps_memoized(i - j, k, arr, dp) + abs(arr[i - j] - arr[i]);
+            min_steps = (min_steps, jump);
+        }
+    }
+    return dp[i] = min_steps;
+}
+
+int jump_with_k_steps_tabulated(int n, int k, vector<int>& arr, vector<int>& dp) {
+    if (n == 0) return 0;
+    dp[0] = 0;
+    for (int i = 1; i <= n; i++) {
+        int min_steps = INT_MAX;
+        for (int j = 1; j <= k; j++) {
+            if (i - j >= 0) {
+                int jump = dp[i - j] + abs(arr[i - j] - arr[i]);
+                min_steps = min(jump, min_steps);
+            }
+        }
+        dp[i] = min_steps;
+    }
+
+    return dp[n];
+}
+
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+    vector<int> dp(n + 1, -1);
+    cout << jump_with_k_steps_tabulated(n - 1, k, arr, dp);
     return 0;
 }
 ```
