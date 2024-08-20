@@ -2450,3 +2450,120 @@ Recursion helps you explore all the possibilities.
    - Count all ways: Sum up all the things
    - Min(of all things): Find Min
    - Max(of all things): Find Max
+- Example 1: [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/description/)
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+// this is the recursive way(btw it looks like fibonacci)
+int climb_stairs(int i) { // we'll jump down
+    if (i == 0) return 1;
+    // however, what if i=1, then we'll need to handle the edge case of i = 1
+    if (i == 1) return 1;
+    int left = climb_stairs(i - 1);
+    int right = climb_stairs(i - 2);
+
+    return left + right;
+
+}
+
+// let's memoize it
+int f(int i, vector<int>& dp) {
+    if (i == 0) return 1;
+    if (i == 1) return 1;
+    if (dp[i] != -1) return dp[i];
+    int left = f(i - 1, dp);
+    int right = f(i - 2, dp);
+
+    return dp[i] = left + right;
+}
+
+// let's tabulate this
+int t(int n, vector<int>& dp) {
+    if (n == 0) return 1;
+    if (n == 1) return 1;
+    for (int i = 2; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+}
+
+//let's do space optimization
+int s(int n) {
+    if (n == 0) return 1;
+    if (n == 1) return 1;
+    int prev = 1, prev2 = 1;
+    for (int i = 0; i <= n; i++) {
+        int curi = prev2 + prev;
+        prev2 = prev;
+        prev = curi;
+    }
+
+    return prev;
+}
+
+
+int main() {
+    // Represent the problem in terms of indices.
+    // We'll consider the stairs to be indices from 0 to n.
+    // Then either we can jump 1 step or 2 steps -> the things we can do with the index.
+
+    return 0;
+}
+```
+
+- Example 2: [Frog Jump](https://www.geeksforgeeks.org/problems/geek-jump/1)
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int min_energy_recursive(int ind, vector<int>& heights) {
+    if (ind == 0) return 0;
+    if (ind == 1) return abs(heights[1] - heights[0]);
+    int left = min_energy_recursive(ind - 1, heights) + abs(heights[ind] - heights[ind - 1]);
+    int right = min_energy_recursive(ind - 2, heights) + abs(heights[ind] - heights[ind - 2]);
+
+    return (left, right);
+}
+
+
+int min_energy_dp(int ind, vector<int>& dp, vector<int>& heights) {
+    if (ind == 0) return 0;
+    if (ind == 1) return abs(heights[1] - heights[0]);
+    if (dp[ind] != -1) return dp[ind];
+    int left = min_energy_dp(ind - 1, dp, heights) + abs(heights[ind] - heights[ind - 1]);
+    int right = min_energy_dp(ind - 2, dp, heights) + abs(heights[ind] - heights[ind - 2]);
+
+    return dp[ind] = min(left, right);
+
+}
+
+int min_energy_tabulated(int ind, vector<int>& dp, vector<int>& heights) {
+    if (ind == 0) return 0;
+    if (ind == 1) return abs(heights[1] - heights[0]);
+    dp[0] = 0; dp[1] = abs(heights[1] - heights[0]);
+    for (int i = 2; i <= ind; i++) {
+        dp[i] = min(dp[i - 1] + abs(heights[i] - heights[i - 1]), dp[i - 2] + abs(heights[i] - heights[i - 2]));
+    }
+    return dp[ind];
+}
+
+int min_energy_space_optimized(int ind, vector<int>& heights) {
+    if (ind == 0) return 0;
+    if (ind == 1) return abs(heights[1] - heights[0]);
+    int prev = abs(heights[1] - heights[0]), prev2 = 0;
+    for (int i = 2; i <= ind; i++) {
+        int curi = min(prev + abs(heights[i] - heights[i - 1]), prev2 + abs(heights[i] - heights[i - 2]));
+        prev2 = prev;
+        prev = curi;
+    }
+    return prev;
+}
+
+int main() {
+   // Express the question in terms of an index
+   // Then do everything with the index as per the question
+   // Think of the edge cases, like ind == 1, in this case.
+   // Then return the minimum of the things you did on the index 
+    return 0;
+}
+```
