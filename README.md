@@ -1705,8 +1705,12 @@ int main() {
 
 ## Recursion
 
-- To explore all the possibilities &rarr; use recursion.
+### When to apply recursion?
+
 - It breaks large problems into smaller ones, and once we devise a solution for the smaller one then it eventually adds upto the solution of large problems.
+- To explore all the possibilities &rarr; use recursion.
+- Count the number of ways.
+- Multiple ways of doing something, then minimum or maximum number of ways are asked.
 
 - Try to write the function in its own terms.
   For example : digit_sum(num)
@@ -2319,7 +2323,7 @@ int main() {
 
 ## Dynamic Programming
 
-- Recursion &rarr; Memoization(for time complexity optimization) &rarr; Tabulation(for space complexity optimization of stack space)
+- Recursion &rarr; Memoization(for time complexity optimization) &rarr; Tabulation(for space complexity optimization of stack space) &rarr; Space Optimization to O(1)
 - Overlapping sub-problems: we store(`memoize`) the results of sub-problems in a map/table and then simply retrieve it.
 - Tabulation: Bottom-up &rarr; build from base case till the required solution
 
@@ -2376,7 +2380,7 @@ int main() {
 
 - Tabulation: Eliminating stack space in this case
   - Time Complexity &rarr; O(N), Space Complexity &rarr; O(N) = Array Space
-  - `Convert the recurrence relation from f(n-1) + f(n-2) &rarr; dp[i-1] + dp[i-2].`
+  - `Convert the recurrence relation from f(n-1) + f(n-2)` &rarr; `dp[i-1] + dp[i-2].`
 
 ```cpp
 #include <bits/stdc++.h>
@@ -2402,7 +2406,7 @@ int main() {
 }
 ```
 
-- Making the space complexity = O(1), by using `prev`, `prev2` and `curi` pointers &rarr; Remember this pattern as it will be used or its variations would be used at any places
+- Making the space complexity = O(1), by using `prev`, `prev2` and `curi` pointers &rarr; Remember this pattern as it will be used or its variations would be used at many places
 
 ```cpp
 #include <bits/stdc++.h>
@@ -2429,3 +2433,20 @@ int main() {
 }
 
 ```
+
+### How to identify a DP/Recursion question?
+
+1. Count the number of ways
+2. Multiple ways of doing something, then minimum or maximum number of ways are asked
+
+Recursion helps you explore all the possibilities.
+
+## How to write recurrence relations in an easy way?
+
+1. Try to represent the problem in terms of indices(even if there is no array).
+2. Do all possible things on that index according to the problem statement.
+3. Think of edge cases.
+4. If you need to do the following:
+   - Count all ways: Sum up all the things
+   - Min(of all things): Find Min
+   - Max(of all things): Find Max
