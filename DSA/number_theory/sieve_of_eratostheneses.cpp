@@ -8,7 +8,7 @@ vector<bool> isPrime(N, 1);
 int main() {
     isPrime[0] = isPrime[1] = false;
     // sieve algorithm -> precompute all the primes in the given range
-    // O(NloglogN) -> time complexity, smaller than O(logN)
+    // O(NloglogN) -> time complexity, smaller than O(NlogN)
     for (int i = 2; i < N; i++) {
         if (isPrime[i] == true) {
             for (int j = 2 * i; j < N; j += i) {

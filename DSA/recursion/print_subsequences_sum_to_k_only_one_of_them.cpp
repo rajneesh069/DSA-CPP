@@ -9,8 +9,7 @@ bool print_subsequences_sum_to_k_only_one_of_them(vector<int>& current, int arr[
             }
             cout << endl;
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }

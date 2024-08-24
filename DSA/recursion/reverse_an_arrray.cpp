@@ -1,8 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void reverse(int arr[], int n, int i = 0)
-{
+void reverse(int arr[], int n, int i = 0) {
     if (i >= n / 2) {
         return;
     }

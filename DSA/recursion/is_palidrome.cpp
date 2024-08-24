@@ -13,6 +13,6 @@ int main() {
 
     string s = "ABBA";
     cout << is_palindrome(s) << endl;
-    
+
     return 0;
 }
