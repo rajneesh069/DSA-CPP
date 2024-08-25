@@ -2,6 +2,7 @@
 using namespace std;
 
 // Pattern of recursion to take the same element unlimites amount of times
+// take and not take pattern
 
 void solve(int i, vector<vector<int>>& ans, vector<int>& current,
     vector<int>& candidates, int target) {
