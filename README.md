@@ -1826,6 +1826,8 @@ public:
 
 ### Combination sum II: Taking an element just once!
 
+- First sort the original array.
+
 - Remember this pattern, where when we have to choose `non-duplicate` elements from an array having duplicate elements ofcourse, then we use for loop along with the `pick/not-pick` technique and put the recursion inside it, as done below.
 
 - `No explicit base condition`(like ind>=n) because the for loop does it implicitly anyway.
@@ -1874,8 +1876,6 @@ int main() {
 }
 ```
 
-- First sort the original array.
-
 - We stop when the target becomes 0, that means we got the answer and we either store it or print it. To check for the duplicate elements we resort back to the for loop and `if(i>ind && v[i]==v[i-1])` we skip that iteration, if the target becomes negative/ `v[i]>target` we can `break/return` the/from the loop.
 
 ### Subsets I: Printing the subsets of an array with unique elements
@@ -1921,6 +1921,8 @@ int main() {
 
 ### Subsets II: Ignoring the dupilcates and printing all the subsets
 
+- Similar to Combination Sum II
+
 - Here we don't need fully formed subsets till `n` rather we want all the unique subsets, that's why `no explicit base condition` because the for loop does it implicitly anyway.
 
 ```cpp
@@ -1956,6 +1958,58 @@ int main() {
     }
     sort(v.begin(), v.end());  // Sort to handle duplicates
     f(0, n, v, current);
+
+    return 0;
+}
+
+```
+
+### Permutations I: Array has unique elements
+
+- Approach 1
+  - We go until we have all the elements in the data structure.
+  - Remember this pattern and there's for loop and inside it the recursion because of variable number of function calls at each step.
+  - `i=0` in each case because again for every element previous elements need to be considered.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void f(int ind, int n, vector<int>& v, int freq[], vector<int>& ds) {
+    if (ds.size() == n) { // we will go till we have all the three elements
+        for (auto& i : ds) {
+            cout << i << " ";
+        }
+        cout << endl;
+        return;
+    }
+
+    for (int i = 0; i < n; i++) { // for each element I have to check from i=0 only
+    // like in case of [1,2,3] if we take 2 first then [2, 1, 3] is also possible, hence we need i=0.
+        if (!freq[i]) {
+            freq[i] = 1;
+            ds.push_back(v[i]);
+            f(i + 1, n, v, freq, ds);
+            ds.pop_back();
+            freq[i] = 0;
+        }
+    }
+
+
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    vector<int> v(n);
+    vector<int> current;
+    for (int i = 0; i < n; i++) {
+        cin >> v[i];
+    }
+
+    int freq[n] = { 0 };
+    f(0, n, v, freq, current);
 
     return 0;
 }
