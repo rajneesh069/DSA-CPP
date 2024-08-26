@@ -1786,6 +1786,8 @@ This preserves the actual state of the recursion and allows us to traverse throu
 
 ### Combination Sum: Taking the same element multiple times
 
+- Remember this pattern that when we have to pick elements from an array which consists of unique elements then we use the `pick/not-pick` method without the for loop!
+
 ```cpp
 class Solution {
 private:
@@ -1822,11 +1824,143 @@ public:
 
 - In the above question we stop when the target becomes negative, i.e, we can take the elements as many times as we want but if the target becomes negative we stop because then no combination of it would sum upto target.
 
+### Combination sum II: Taking an element just once!
 
-### Combination sum II: Taking the element just once!
+- Remember this pattern, where when we have to choose `non-duplicate` elements from an array having duplicate elements ofcourse, then we use for loop along with the `pick/not-pick` technique and put the recursion inside it, as done below.
+
+- `No explicit base condition`(like ind>=n) because the for loop does it implicitly anyway.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void f(int ind, int target, int& n, vector<int>& ds,
+    vector<vector<int>>& ans, vector<int>& v) {
+    if (target == 0) {
+        ans.push_back(ds);
+        return;
+    }
+
+    // recursion inside the for loop and we moved ahead as we can't pick the same element unlimited number of times
+    for (int i = ind; i < n; i++) {
+        if (i > ind && v[i] == v[i - 1])
+            continue;
+        if (v[i] > target)
+            break;
+        ds.push_back(v[i]);
+        f(i + 1, target - v[i], n, ds, ans, v);
+        ds.pop_back();
+    }
+}
 
 
+int main() {
+    int n, target;
+    cin >> n, target;
 
+    vector<int> v;
+    vector<vector<int>> ans;
+    vector<int> current;
+
+    for (int i = 0; i < n; i++) {
+        cin >> v[i];
+    }
+
+    sort(v.begin(), v.end()); // sort the original array
+
+    f(0, target, n, current, ans, v);
+
+    return 0;
+}
+```
+
+- First sort the original array.
+
+- We stop when the target becomes 0, that means we got the answer and we either store it or print it. To check for the duplicate elements we resort back to the for loop and `if(i>ind && v[i]==v[i-1])` we skip that iteration, if the target becomes negative/ `v[i]>target` we can `break/return` the/from the loop.
+
+### Subsets I: Printing the subsets of an array with unique elements
+
+- Similar to Combination Sum I
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void f(int ind, int sum, int n, vector<int>& v, vector<int>& current) {
+    if (ind >= n) {
+        if (current.size() == 0) cout << "{}";
+        for (auto& it : current) {
+            cout << it << " ";
+        }
+        cout << "\n" << "sum: " << sum << "\n \n";
+        return;
+    }
+
+    current.push_back(v[ind]);
+    f(ind + 1, sum + v[ind], n, v, current);
+    current.pop_back();
+
+    f(ind + 1, sum, n, v, current);
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    vector<int> v(n);
+    vector<int> current;
+    for (int i = 0; i < n; i++) {
+        cin >> v[i];
+    }
+
+    f(0, 0, n, v, current);
+
+    return 0;
+}
+```
+
+### Subsets II: Ignoring the dupilcates and printing all the subsets
+
+- Here we don't need fully formed subsets till `n` rather we want all the unique subsets, that's why `no explicit base condition` because the for loop does it implicitly anyway.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void f(int ind, int n, vector<int>& v, vector<int>& current) {
+    // Include the current subset in the output immediately
+    for (auto& it : current) {
+        cout << it << " ";
+    }
+    cout << "\n";
+
+    // Explore further elements starting from the current index
+    for (int i = ind; i < n; i++) {
+        if (i > ind && v[i] == v[i - 1]) {
+            continue;  // Skip duplicates
+        }
+        current.push_back(v[i]);
+        f(i + 1, n, v, current);
+        current.pop_back();
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    vector<int> v(n);
+    vector<int> current;
+    for (int i = 0; i < n; i++) {
+        cin >> v[i];
+    }
+    sort(v.begin(), v.end());  // Sort to handle duplicates
+    f(0, n, v, current);
+
+    return 0;
+}
+
+```
 
 ## Graphs : Contd. after the Java notes, but in C++
 
