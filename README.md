@@ -1784,7 +1784,7 @@ This preserves the actual state of the recursion and allows us to traverse throu
 
 - `It's nothing different from recursion, just a fancy name.`
 
-### Combination Sum : Taking the same element multiple times
+### Combination Sum: Taking the same element multiple times
 
 ```cpp
 class Solution {
@@ -1821,6 +1821,12 @@ public:
 ```
 
 - In the above question we stop when the target becomes negative, i.e, we can take the elements as many times as we want but if the target becomes negative we stop because then no combination of it would sum upto target.
+
+
+### Combination sum II: Taking the element just once!
+
+
+
 
 ## Graphs : Contd. after the Java notes, but in C++
 
