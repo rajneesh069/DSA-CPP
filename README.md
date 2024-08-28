@@ -1780,9 +1780,32 @@ This preserves the actual state of the recursion and allows us to traverse throu
 
 - Maze traversal is the best example for this.
 
-- Or when we pass some array/string/variable and we need to come back up in the function to perform some operation on it then we might need to use backtracking if the operations are needed to be performed on the previous version of the variable, i.e., the one with which the recursion was called.
+- Or when we pass some array/string/variable(by reference) and we need to come back up in the function to perform some operation on it then we might need to use backtracking if the operations are needed to be performed on the previous version of the variable, i.e., the one with which the recursion was called.
 
 - `It's nothing different from recursion, just a fancy name.`
+
+## Patterns In Recursion
+
+- Variable number of recursive calls at a level &rarr; use for loop and put the recursion inside it.
+
+- Use the `void` return type to explore all the possibilities.
+
+- Return 1 or 0 if you want to count then add all the recursive calls and return it. Return 0 when the condition isn't satisified and if it's satisified return 1.
+
+- Return true or false if you need to break the recursion after the condition is once satisfied. Return true for satisified conditions else return false.
+
+1. Unique Elements in an array: Use the take/not-take technique, no for loop and terminate the recursion using the base case yourself.
+
+   - [Taking the same element unlimited number of times](#combination-sum-taking-the-same-element-multiple-times)
+   - [Taking the element only once](#combination-sum-variation-taking-an-element-just-once)
+
+2. Duplicate Elements in an array: Sort the array, use the for loop and inside it put the recursion, for loop will automatically do the take/not-take and will implicitly terminate so we don't necessarily need a base case to terminate the recursion rather terminate when the conditions are satisfied.
+
+   - [Taking the element only once and skipping the duplicates](#combination-sum-ii-taking-an-element-just-once)
+   - Take an element unlimited number of times
+     Remove the duplicate ones and solve it like [Combination Sum I](#combination-sum-taking-the-same-element-multiple-times)
+
+3. Permutations: We use the for loop method because of the variable number of choices to start with and put the recursion inside the for loop which eventually picks up the elements provided the same element hasn't been picked already. If there are duplicate elements use the way taught in [Combination Sum II](#combination-sum-ii-taking-an-element-just-once) and add the `f[i-1]==0` along with it.
 
 ### Combination Sum: Taking the same element multiple times
 
@@ -1823,6 +1846,45 @@ public:
 ```
 
 - In the above question we stop when the target becomes negative, i.e, we can take the elements as many times as we want but if the target becomes negative we stop because then no combination of it would sum upto target.
+
+### Combination Sum Variation: Taking an element just once
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+void solve(vector<int>& candidates, int target, vector<vector<int>>& ans,
+               vector<int>& current, int n, int i) {
+        if (i >= n) {
+            if (target == 0) {
+                ans.push_back(current);
+            }
+            return;
+        }
+
+        // take
+        if (target > 0) { // important line
+            current.push_back(candidates[i]);
+            solve(candidates, target - candidates[i], ans, current, n, i+1);
+            current.pop_back();
+        }
+
+        // not take
+        solve(candidates, target, ans, current, n, i + 1);
+    }
+
+int main(){
+    int n, target;
+    cin >> n >> target;
+    vector<int> ds;
+    vector<int> candidates(n);
+    for(int i=0; i<n; i++){
+        cin >> candidates[i];
+    }
+    vector<<vector<int>> ans;
+    solve(candidates, target, ans, ds, n, 0);
+    return 0;
+}
+```
 
 ### Combination sum II: Taking an element just once!
 
@@ -2014,6 +2076,47 @@ int main() {
     return 0;
 }
 
+```
+
+### Permutations II: Skipping the duplicate elements
+
+- We skip it just like we did it in Subets II and Combination Sum II.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void permutations(int j, vector<int>& v, vector<int>& ds, int f[]) {
+    if (ds.size() == v.size()) {
+        for (auto&& it : ds) {
+            cout << it << " ";
+        }
+        cout << "\n";
+    }
+
+    for (int i = 0; i < v.size(); i++) {
+        if (i > 0 && v[i] == v[i - 1] && f[i - 1] == 0) {
+            continue;
+        }
+        if (f[i] != 1) {
+            f[i] = 1;
+            ds.push_back(v[i]);
+            permutations(i + 1, v, ds, f);
+            ds.pop_back();
+            f[i] = 0;
+        }
+    }
+
+}
+
+
+int main() {
+    vector<int> v = { 1,2,2 };
+    vector<int> ds;
+    int f[v.size()] = { 0 };
+    permutations(0, v, ds, f);
+    return 0;
+}
 ```
 
 ## Graphs : Contd. after the Java notes, but in C++
@@ -2678,12 +2781,13 @@ int f(int i, vector<int>& dp) {
 }
 
 // let's tabulate this
-int t(int n, vector<int>& dp) {
+int t(int n, vector<int>& dp) { // size of dp vector would be n+1, for 1-based indexing in this case
     if (n == 0) return 1;
     if (n == 1) return 1;
     for (int i = 2; i <= n; i++) {
         dp[i] = dp[i - 1] + dp[i - 2];
     }
+    return dp[n];
 }
 
 //let's do space optimization
