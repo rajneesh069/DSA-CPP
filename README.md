@@ -1703,6 +1703,51 @@ int main() {
 }
 ```
 
+## Two Pointer and Sliding Window
+
+1. Whenever you get the problem of finding max/min substring think of two pointer and sliding window approach.
+2. These algos are more of a constructive approach and the only thing which remains constant is the window and it keeps moving across the string.
+3. How the window is moved, depends on the problem.
+
+- We start out with an empty window, i.e., `l and r` would be at the same position then we keep expanding the window until some condition is violated and at that point we simply move the window ahead, i.e., move `l` to a new position.
+
+- `l`: moves the window, `r` expands the window.
+
+### Examples:
+
+1. [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/)
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int main() {
+    string s;
+    cin >> s;
+    int n = s.size();
+    vector<int>m(256, -1); // hash array for 250 characters
+    int l = 0, r = 0;
+    int max_length = 0;
+    while (r < n) {
+        int length = 0;
+
+        if (m[s[r]] != -1) { // check if the character is already in the hash array
+            if (m[s[r]] >= l) { // check if that character is in our window
+                l = m[s[r]] + 1; // move the window if it is in the window
+
+            }
+        }
+        m[s[r]] = r; //re-assign new value to the position of that character
+        length = r - l + 1;
+        max_length = max(max_length, length);
+        r++;
+    }
+    cout << "max length: " << max_length;
+    return 0;
+}
+```
+
 ## Recursion
 
 ### When to apply recursion?
