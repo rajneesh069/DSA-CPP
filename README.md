@@ -1706,9 +1706,29 @@ int main() {
 ## Bit Manipulation
 
 - Number of digits in a binary number = (int)(log<sub>2</sub>(N)) + 1.
-- n & (-n) gives a number which is basically the rightmost set bit's position.
+- `n & (-n) isolates the rightmost set bit of n. It doesn't give the position but rather a number where only the rightmost set bit of n is set.`
 
   Example: let n = 10010, then (10010) & (01110) = 00010, here 01110 is the 2's complement(negative) of 10010.
+
+- `rightmost_unset_bit = (~n) & (n + 1). rightmost_unset_bit is a value that has only one bit set at the position of the rightmost unset bit in n.`
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int setBit(int n) {
+    if (n == 0) return 1;
+
+    int rightmost_unset_bit = (~n) & (n + 1);
+    return n | rightmost_unset_bit;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    cout << setBit(n);
+    return 0;
+}
+```
 
 - n & (n-1) clears the rightmost set bit.
 
