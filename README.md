@@ -1703,6 +1703,52 @@ int main() {
 }
 ```
 
+## Bit Manipulation
+
+- Number of digits in a binary number = (int)(log<sub>2</sub>(N)) + 1.
+- n & (-n) gives a number which is basically the rightmost set bit's position.
+
+  Example: let n = 10010, then (10010) & (01110) = 00010, here 01110 is the 2's complement(negative) of 10010.
+
+- n & (n-1) clears the rightmost set bit.
+
+  Example: let n = 10010, then
+  (10010) & (10010-1) = (10010) & (10001) = 10000
+
+- (1 << i) & n tells if the ith bit is set in a number or not. If 1-based indexing then (1<<(i-1)) & n would give the same result.
+
+- 1 << i = 2<sup>i</sup>, it would overflow after the 31st bit, as the limit is 2<sup>31</sup>-1.
+- 1 >> i = 2<sup>-i</sup>
+- 1 ^ bit = flipped bit.
+
+  - 1 ^ 0 = 1
+  - 1 ^ 1 = 0
+
+- 1 & bit = bit.
+  - 1 & 1 = 1
+  - 1 & 0 = 0
+- 1 | bit = 1
+  - 1 | 1 = 1
+  - 1 | 0 = 1
+- 0 & bit = 0 &rarr; This is used for masking unwanted bits and set them to 0.
+
+- Find sum of set bits upto a number N
+
+```cpp
+
+int countSetBits(int n) {
+    int count = 0;
+    for (int i = 0; (1 << i) <= n; ++i) {
+        int bitMask = (1 << (i + 1)); // Size of full cycles
+        int completeCycles = n / bitMask; // Number of complete cycles
+        int remaining = n % bitMask; // Remaining numbers after full cycles
+
+        count += completeCycles * (bitMask / 2) + max(0, remaining - (bitMask / 2) + 1);
+    }
+    return count;
+}
+```
+
 ## Two Pointer and Sliding Window
 
 1. Whenever you get the problem of finding max/min substring think of two pointer and sliding window approach.
