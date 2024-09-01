@@ -1711,6 +1711,7 @@ int main() {
   Example: let n = 10010, then (10010) & (01110) = 00010, here 01110 is the 2's complement(negative) of 10010.
 
 - `rightmost_unset_bit = (~n) & (n + 1). rightmost_unset_bit is a value that has only one bit set at the position of the rightmost unset bit in n.`
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -1737,8 +1738,8 @@ int main() {
 
 - (1 << i) & n tells if the ith bit is set in a number or not. If 1-based indexing then (1<<(i-1)) & n would give the same result.
 
-- 1 << i = 2<sup>i</sup>, it would overflow after the 31st bit, as the limit is 2<sup>31</sup>-1.
-- 1 >> i = 2<sup>-i</sup>
+- 1 << i = 2<sup>i</sup>, it would overflow after the 31st bit, as the limit is 2<sup>31</sup>-1. Left shifting a number means multiplying by 2.
+- 1 >> i = 2<sup>-i</sup>. Right shifting a number means dividing by 2.
 - 1 ^ bit = flipped bit.
 
   - 1 ^ 0 = 1
@@ -1766,6 +1767,66 @@ int countSetBits(int n) {
         count += completeCycles * (bitMask / 2) + max(0, remaining - (bitMask / 2) + 1);
     }
     return count;
+}
+```
+
+- Dividing two integers using bit manipulation !!!IMPORTANT!!!
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int divide(int dividend, int divisor) {
+    bool is_negative = (dividend < 0) ^ (divisor < 0);
+
+    if (divisor == -1) {
+        if (dividend == INT_MIN) return INT_MAX;
+        return -dividend;
+    }
+    if (dividend == 0)
+        return 0;
+    if (dividend == divisor)
+        return 1;
+    if (divisor == 1)
+        return dividend;
+
+    long long q = 0;
+    long long d1 = abs(divisor);  // divisor
+    long long d2 = abs(dividend); // dividend
+
+    // what we need to find is d2/d1
+
+    while (d2 >= d1) {
+        long long temp = d1, multiple = 1;
+        while (d2 >= (temp << 1)) {
+            temp <<= 1;
+            multiple <<= 1;
+        }
+        d2 -= temp;
+        q += multiple;
+    }
+
+    if (is_negative) {
+        q = -q;
+    }
+
+    if (q > INT_MAX) {
+        return INT_MAX;
+    }
+
+    if (q < (INT_MIN)) {
+        return INT_MIN;
+    }
+
+    return q;
+}
+
+int main() {
+    int dividend, divisor;
+    cin >> dividend >> divisor;
+    cout << divide(dividend, divisor);
+
+    return 0;
 }
 ```
 
