@@ -1739,7 +1739,9 @@ int main() {
 - (1 << i) & n tells if the ith bit is set in a number or not. If 1-based indexing then (1<<(i-1)) & n would give the same result.
 
 - 1 << i = 2<sup>i</sup>, it would overflow after the 31st bit, as the limit is 2<sup>31</sup>-1. Left shifting a number means multiplying by 2.
+
 - 1 >> i = 2<sup>-i</sup>. Right shifting a number means dividing by 2.
+
 - 1 ^ bit = flipped bit.
 
   - 1 ^ 0 = 1
@@ -1826,6 +1828,33 @@ int main() {
     cin >> dividend >> divisor;
     cout << divide(dividend, divisor);
 
+    return 0;
+}
+```
+- XOR from L To R, both inclusive, i.e., [L,R]
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int xorUpto(int a) { // xor from 0 to a(both inclusive)
+    switch (a % 4) {
+    case 0: return a;
+    case 1: return 1;
+    case 2: return a + 1;
+    case 3: return 0;
+    }
+    return 0;
+}
+
+int xor_from_l_to_r(int l, int r) { // both inclusive
+    return xorUpto(l - 1) ^ xorUpto(r);
+}
+
+
+int main() {
+    int l, r;
+    cin >> l >> r;
+    cout << xor_from_l_to_r(l, r);
     return 0;
 }
 ```
