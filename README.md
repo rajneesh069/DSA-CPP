@@ -626,6 +626,35 @@ int main() {
 }
 ```
 
+- (Unique Number of Occurences)[https://leetcode.com/problems/unique-number-of-occurrences/description/]
+
+    - unordered_set<int>s; s.insert(2) returns a pair, in which first value is the iterator to that element in set and second is true/false depending on if the element was inserted.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+bool uniqueOccurrences(vector<int>& v) {
+    unordered_map<int, int> f;
+    for (auto& it : v) {
+        f[it]++;
+    }
+    unordered_set<int>o;
+    for (auto& el : f) {
+        if (!o.insert(el.second).second) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int main() {
+
+
+    return 0;
+}
+```
+
 ### Multisets : Allows multiple same values, O(logN) time complexity for everything generally.
 
 - Allows multiple keys in the set in sorted manner.
@@ -1831,7 +1860,9 @@ int main() {
     return 0;
 }
 ```
+
 - XOR from L To R, both inclusive, i.e., [L,R]
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
