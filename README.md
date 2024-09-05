@@ -2774,7 +2774,7 @@ bool dfs(int v, int par, vector<int>g[], vector<bool>& vis) {
     bool does_loop_exist = false;
     for (int child : g[v]) {
         if (vis[child] && child == par) continue;
-        if (vis[child] && child != par) {
+        if (vis[child]) {
             return true;
         };
         does_loop_exist |= dfs(child, v, g, vis);
