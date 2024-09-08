@@ -2890,7 +2890,40 @@ int main(){
 }
 ```
 
-### !!! LEVEL OF A NODE = DEPTH OF A NODE FROM ROOT NODE IN A TREE!!!
+### !!! LEVEL OF A NODE = DEPTH OF A NODE FROM ROOT NODE IN A TREE !!!
+
+### DFS in trees
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void dfs(int vertex, int par, vector<vector<int>>&g){
+    for(int child: g[vertex]){
+        if(child==par) continue;
+        dfs(child, par, g);
+    }
+}
+
+int main(){
+    int n;
+    cin >> n;
+    vector<vector<int>>graph(n + 1);
+
+    vector<int> depth(n + 1, 0);
+    vector<int> height(n + 1);
+
+
+    for (int i = 0; i < n - 1; i++) {
+        int x, y;
+        cin >> x >> y;
+        graph[x].push_back(y);
+        graph[y].push_back(x);
+    }
+
+    dfs(1, 0, graph);
+}
+```
 
 ### Height and Depth of a tree
 
@@ -3233,11 +3266,15 @@ int main() {
 }
 ```
 
-### Breadth First Search in Trees and Graphs
+### Breadth First Search(BFS) in Trees and Graphs
+
 - Goes level wise.
-- There are two levels at a time in the queue, the current one and the next one.
-- Time Complexity is O(V+E).
+- `There are two levels at a time in the queue, the current one and the next one.`
+- `Time Complexity is O(V+E).`
 - Each node is visited once, because of the visited array ofcourse.
+- `In an equally weighted graph, the path given from the source node is the shortest.`
+- The smaller level will always be accessed by the BFS firstly then it goes to the greater ones!
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -3280,6 +3317,89 @@ int main() {
     vector<bool>vis(n + 1, 0);
     vector<int>b;
     bfs(1, g, b, vis, n);
+
+    return 0;
+}
+```
+
+#### [Minimum Distance Question using BFS](https://www.spoj.com/problems/NAKANJ/)
+
+- Find the minimum number of moves a knight takes to reach from one square to another square of a chess board (8 × 8).
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+const int INF = 1e9 + 10;
+
+int getX(string s) {
+    return s[0] - 'a';
+}
+int getY(string s) {
+    return s[1] - '1';
+}
+
+int vis[8][8];
+int lev[8][8];
+
+vector<pair<int, int>> movements = {
+    {1,2}, {-1,2},
+    {2,1}, {2,-1},
+    {-2,-1}, {-2,1},
+    {1,-2}, {-1,-2}
+};
+
+bool isValid(int x, int y) {
+    return x >= 0 && y >= 0 && x < 8 && y < 8;
+}
+
+int bfs(string src, string dest) {
+    int srcX = getX(src);
+    int srcY = getY(src);
+    int destX = getX(dest);
+    int destY = getY(dest);
+    queue<pair<int, int>> q;
+    q.push({ srcX, srcY });
+    vis[srcX][srcY] = 1;
+
+    while (!q.empty()) {
+        pair<int, int> p = q.front();
+        q.pop();
+        int x = p.first;
+        int y = p.second;
+        for (auto movement : movements) {
+            int childX = movement.first + x;
+            int childY = movement.second + y;
+            if (!isValid(childX, childY)) continue;
+            if (vis[childX][childY]) continue;
+            q.push({ childX, childY });
+            lev[childX][childY] = lev[x][y] + 1;
+            vis[childX][childY] = 1;
+        }
+        if (lev[destX][destY] != INF) break;
+    }
+    return lev[destX][destY];
+
+}
+
+void reset() {
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            lev[i][j] = INF;
+            vis[i][j] = 0;
+        }
+    }
+}
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        reset();
+        string s1, s2;
+        cin >> s1 >> s2;
+        cout << bfs(s1, s2);
+    }
 
     return 0;
 }
