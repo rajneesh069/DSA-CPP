@@ -2890,6 +2890,8 @@ int main(){
 }
 ```
 
+### !!! LEVEL OF A NODE = DEPTH OF A NODE FROM ROOT NODE IN A TREE!!!
+
 ### Height and Depth of a tree
 
 - Height is calculated when coming up in the tree and depth is calculated when going down the tree.
@@ -3227,6 +3229,58 @@ int main() {
         ans = max(ans, part_1 * 1LL * part_2);
     }
     cout << "ans: " << ans << "\n";
+    return 0;
+}
+```
+
+### Breadth First Search in Trees and Graphs
+- Goes level wise.
+- There are two levels at a time in the queue, the current one and the next one.
+- Time Complexity is O(V+E).
+- Each node is visited once, because of the visited array ofcourse.
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+void bfs(int source, vector<vector<int>>& g, vector<int>& b, vector<bool>& vis, int n) {
+    queue<int>q;
+    q.push(1);
+    b.push_back(1);
+    vis[1] = true;
+    vector<int>level(n + 1, 0);
+    while (!q.empty()) {
+        int current_node = q.front();
+        q.pop();
+        b.push_back(current_node);
+        for (int child : g[current_node]) {
+            if (vis[child]) continue;
+            q.push(child);
+            vis[child] = true;
+            level[child] = level[current_node] + 1;
+        }
+    }
+
+    for (int i = 1; i <= n; i++) {
+        cout << b[i] << ", level[" << b[i] << "]: " << level[i] << "\n";
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<vector<int>>g(n + 1);
+
+    for (int i = 0; i < n - 1; i++) {
+        int x, y; cin >> x >> y;
+        g[x].push_back(y);
+        g[y].push_back(x);
+    }
+
+    vector<bool>vis(n + 1, 0);
+    vector<int>b;
+    bfs(1, g, b, vis, n);
+
     return 0;
 }
 ```
