@@ -2990,8 +2990,8 @@ int main() {
 ### Diameter of a tree
 
 - Find the max depth by traversing the tree through any node as root node.
-- Then the node which gives the max_depth, use it as a root node and find the max depth again.
-- These two nodes are the ends of the diameter and the newly calculated max_depth is the diameter.
+- Then the node which gives the max depth,i.e., the max_depth_node use it as a root node and find the max depth again.
+- These two nodes(max_depth_node and max_depth_node_1) are the two ends of the diameter and the newly calculated max_depth is the diameter.
 
 ```cpp
 #include <bits/stdc++.h>
@@ -3037,7 +3037,7 @@ int main() {
 
     reset(d);
 
-    dfs(12, 0, d, g);
+    dfs(max_depth_node, 0, d, g);
 
     int max_depth_node_1 = -1;
     int max_depth_1 = -1;
@@ -3118,6 +3118,115 @@ int main() {
     }
 
     cout << LCA;
+    return 0;
+}
+```
+
+### Edge Deletion Questions
+
+1. Given a tree with `n` nodes, where each node is labeled with a unique integer from 1 to `n`, you need to compute the maximum possible product formed by deleting a single edge in the tree. When an edge is deleted, the tree is divided into two separate subtrees. The product is calculated as the product of the sums of the node values in each of these two subtrees.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void dfs(int v, int par, vector<vector<int>>& g, vector<int>& subtree_sum) {
+    subtree_sum[v] = v;
+    for (int c : g[v]) {
+        if (c == par) continue;
+        dfs(c, v, g, subtree_sum);
+        subtree_sum[v] += subtree_sum[c];
+    }
+}
+
+
+int main() {
+    int n;
+    cin >> n;
+    vector<vector<int>>g(n + 1);
+    for (int i = 0; i < n - 1; i++) {
+        int x, y; cin >> x >> y;
+        g[y].push_back(x);
+        g[x].push_back(y);
+    }
+    vector<int>subtree_sum(n + 1, 0);
+    dfs(1, -1, g, subtree_sum);
+
+    // delete edge: Delete the top edge of the node
+    long long ans = 1;
+    for (int i = 2; i <= n; i++) {
+        int part_1 = subtree_sum[i];
+        int part_2 = subtree_sum[1] - subtree_sum[i];
+        ans = max(ans, part_1 * 1LL * part_2);
+    }
+    cout << ans << "\n";
+    return 0;
+}
+```
+
+2. Given a tree with `n` nodes, where each node is labeled with a unique integer from 1 to `n`, your task is to:
+
+   1. Count how many prime numbers exist in the subtree of each node, including the node itself.
+   2. Find the maximum possible product formed by deleting a single edge in the tree, where the product is computed as the number of prime numbers in the two resulting subtrees after the deletion.
+
+   - Input:
+     1. The first line contains a single integer n representing the number of nodes in the tree.
+     2. The next n-1 lines each contain two integers x and y, representing an undirected edge
+        between node x and node y.
+   - Output:
+     1. For each node from 1 to n, print the count of prime numbers in its subtree.
+     2. Output the maximum product that can be obtained by deleting exactly one edge, where the product is the multiplication of prime counts in the two resulting subtrees.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void dfs(int v, int par, vector<vector<int>>& g, vector<int>& subtree_prime_count, vector<bool>& isPrime) {
+    if (isPrime[v])
+        subtree_prime_count[v]++;
+    for (int c : g[v]) {
+        if (c == par) continue;
+        dfs(c, v, g, subtree_prime_count, isPrime);
+        subtree_prime_count[v] += subtree_prime_count[c];
+    }
+}
+
+
+int main() {
+    int n;
+    cin >> n;
+    vector<vector<int>>g(n + 1);
+    for (int i = 0; i < n - 1; i++) {
+        int x, y; cin >> x >> y;
+        g[y].push_back(x);
+        g[x].push_back(y);
+    }
+    vector<int>subtree_prime_count(n + 1, 0);
+    vector<bool>isPrime(n + 1, true);
+
+    isPrime[1] = isPrime[0] = 0;
+    for (int i = 2; i < n + 1; i++) {
+        if (isPrime[i]) {
+            for (int j = 2 * i; j < n + 1; j += i) {
+                isPrime[j] = 0;
+            }
+        }
+    }
+
+    dfs(1, -1, g, subtree_prime_count, isPrime);
+
+    for (int i = 1; i <= n; i++) {
+        cout << subtree_prime_count[i] << "\n";
+    }
+
+    // delete edge: Delete the top edge of the node
+    long long ans = 1;
+    for (int i = 2; i <= n; i++) {
+        int part_1 = subtree_prime_count[i];
+        int part_2 = subtree_prime_count[1] - subtree_prime_count[i];
+        ans = max(ans, part_1 * 1LL * part_2);
+    }
+    cout << "ans: " << ans << "\n";
     return 0;
 }
 ```

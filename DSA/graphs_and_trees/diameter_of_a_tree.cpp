@@ -41,7 +41,7 @@ int main() {
 
     reset(d);
 
-    dfs(12, 0, d, g);
+    dfs(max_depth_node, 0, d, g);
 
     int max_depth_node_1 = -1;
     int max_depth_1 = -1;
