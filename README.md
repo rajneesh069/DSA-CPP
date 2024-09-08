@@ -628,7 +628,7 @@ int main() {
 
 - (Unique Number of Occurences)[https://leetcode.com/problems/unique-number-of-occurrences/description/]
 
-    - unordered_set<int>s; s.insert(2) returns a pair, in which first value is the iterator to that element in set and second is true/false depending on if the element was inserted.
+  - unordered_set<int>s; s.insert(2) returns a pair, in which first value is the iterator to that element in set and second is true/false depending on if the element was inserted.
 
 ```cpp
 #include <bits/stdc++.h>
@@ -2851,6 +2851,7 @@ int main() {
 ```
 
 ### [Number of Islands](https://leetcode.com/problems/number-of-islands/)
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -2863,7 +2864,7 @@ private:
         dfs(i+1, j, g, vis);
         dfs(i-1, j, g, vis);
         dfs(i, j+1, g, vis);
-        dfs(i, j-1, g, vis);   
+        dfs(i, j-1, g, vis);
     }
 public:
     int numIslands(vector<vector<char>>& grid) {
@@ -2878,13 +2879,63 @@ public:
                 }
             }
         }
-        
+
         return count;
     }
-       
+
 };
 
 int main(){
+    return 0;
+}
+```
+
+### Height and Depth of a tree
+
+- Height is calculated when coming up in the tree and depth is calculated when going down the tree.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void dfs(int v, int par, vector<vector<int>>& g, vector<int>& depth, vector<int>& height) {
+
+    // going down into the vertex
+    for (int child : g[v]) {
+        // going down into the child
+        if (child == par) continue;
+        depth[child] = depth[v] + 1;
+        dfs(child, v, g, depth, height);
+        height[v] = max(height[child] + 1, height[v]);
+        // coming up from the child
+    }
+    // coming up from the vertex
+}
+
+
+int main() {
+    int n;
+    cin >> n;
+    vector<vector<int>>graph(n + 1);
+
+    vector<int> depth(n + 1, 0);
+    vector<int> height(n + 1);
+
+
+    for (int i = 0; i < n - 1; i++) {
+        int x, y;
+        cin >> x >> y;
+        graph[x].push_back(y);
+        graph[y].push_back(x);
+    }
+
+    dfs(1, 0, graph, depth, height);
+
+    for (int i = 1; i <= n; i++) {
+        cout << depth[i] << " " << height[i] << "\n";
+    }
+
+
     return 0;
 }
 ```
