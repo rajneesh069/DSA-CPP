@@ -9,6 +9,7 @@ vector<int> searchRange(vector<int>& nums, int target) {
     int n = nums.size();
     int start = 0, end = n - 1;
     int ans = -1;
+    // finds first occurence
     while (start <= end) {
         int mid = start + (end - start) / 2;
         if (nums[mid] == target) {
@@ -25,6 +26,7 @@ vector<int> searchRange(vector<int>& nums, int target) {
     end = n - 1;
     ans = -1;
 
+    //finds last occurence
     while (start <= end) {
         int mid = start + (end - start) / 2;
         if (nums[mid] == target) {

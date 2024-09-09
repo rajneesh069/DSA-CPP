@@ -1890,6 +1890,164 @@ int main() {
 }
 ```
 
+## Binary Search(Works for sorted array only)
+
+0. Binary Search
+    - Time Complexity: O(log(n))
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n, target;
+    cin >> n >> target;
+    int v[n];
+
+    int start =0, end = n-1;
+    while(start<=end){
+        int mid = start + (end-start)/2;
+        if(v[mid]==target){
+           return mid;
+        }else if(v[mid]<target){
+            start = mid+1;
+        }else{
+            end = mid-1;
+        }
+    }
+
+    return -1;
+}
+```
+
+1. Floor of a number
+   - It's the largest number less than or equal to the given target.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int main() {
+    // works for sorted array ofc
+    int n, target;
+    cin >> n >> target;
+    int v[n];
+    for (int i = 0; i < n; i++) {
+        cin >> v[i];
+    }
+
+    int start = 0, end = n - 1, f = -1;
+    while (start <= end) {
+        int mid = start + (end - start) / 2;
+        if (v[mid] == target) {
+            f = mid;
+            break;
+        } else if (v[mid] > target) {
+            end = mid - 1;
+        } else {
+            f = mid; // potential floor
+            start = mid + 1;
+        }
+    }
+    cout << f << (f == -1 ? -1 : v[f]) << "\n";
+
+    return 0;
+}
+```
+
+2. Ceil of a number
+   - It's the smallest number greater than or equal to the given target.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int main() {
+    // works for sorted array ofc
+    int n, target;
+    cin >> n >> target;
+    int v[n];
+    for (int i = 0; i < n; i++) {
+        cin >> v[i];
+    }
+
+    int start = 0, end = -1, c = -1;
+    while (start <= end) {
+        int mid = start + (end - start) / 2;
+        if (v[mid] == target) {
+            c = mid;
+            break;
+        } else if (v[mid] < target) {
+            start = mid - 1;
+        } else {
+            c = mid; // potential ceil
+            end = mid - 1;
+        }
+    }
+
+    cout << c << " " << (c == -1 ? -1 : v[c]);
+
+    return 0;
+}
+```
+
+3. Find the first and last occurence of a number
+   - To find the first occurrence always break the loop with `start = mid+1`.
+   - To find the last occurrence always break the loop with `end = mid-1`.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+// to get the last position break the loop with start=mid+1
+// to get the first position break the loop with end = mid-1
+
+vector<int> searchRange(vector<int>& nums, int target) {
+    vector<int> v(2, -1);
+    int n = nums.size();
+    int start = 0, end = n - 1;
+    int ans = -1;
+    // finds first occurence
+    while (start <= end) {
+        int mid = start + (end - start) / 2;
+        if (nums[mid] == target) {
+            ans = mid;
+            start = mid + 1; // always break it with start=mid+1;
+        } else if (nums[mid] > target) {
+            end = mid - 1;
+        } else {
+            start = mid + 1; // always break it with start=mid+1;
+        }
+    }
+    v[1] = ans;
+    start = 0;
+    end = n - 1;
+    ans = -1;
+
+    //finds last occurence
+    while (start <= end) {
+        int mid = start + (end - start) / 2;
+        if (nums[mid] == target) {
+            ans = mid;
+            end = mid - 1; // always break it with end = mid-1;
+        } else if (nums[mid] < target) {
+            start = mid + 1;
+        } else {
+            end = mid - 1; // always break it with end = mid-1;
+        }
+    }
+    v[0] = ans;
+    return v;
+}
+
+int main() {
+
+
+    return 0;
+}
+```
+
 ## Two Pointer and Sliding Window
 
 1. Whenever you get the problem of finding max/min substring think of two pointer and sliding window approach.
