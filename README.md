@@ -1343,6 +1343,41 @@ int main() {
 }
 ```
 
+### [Two Sum](https://leetcode.com/problems/two-sum/)
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> twoSum(vector<int>& v, int target) {
+    unordered_map<int, int> m;
+
+    for (int i = 0; i < v.size(); i++) {
+        int val = target - v[i];
+        if (m.find(val) != m.end()) {
+            return { m[val], i };
+        }
+        m[v[i]] = i;
+    }
+    return { -1, -1 };
+}
+
+int main() {
+    int n, target;
+    cin >> n >> target;
+    vector<int>v(n);
+    for (int i = 0; i < n; i++) {
+        cin >> v[i];
+    }
+    vector<int> ans = twoSum(v, target);
+    for (int i = 0; i < ans.size(); i++) {
+        cout << ans[i] << " ";
+    }
+
+    return 0;
+}
+```
+
 ### Prefix sum technique of Precomputation
 
 1. Prefix sum on 1D arrays
@@ -3564,7 +3599,7 @@ int main() {
 }
 ```
 
-### 0-1 BFS: For finding shortest path if the weights are only 0 and 1
+### [0-1 BFS: For finding shortest path if the weights are only 0 and 1](https://vjudge.net/problem/CodeChef-REVERSE)
 
 - We process the node again(two times) even if it has been processed once, i.e., went into the queue once already, that's why no visited array as we need to process the path with wt = 0(which could result in the even shorter path), that's why we used the level technique, the level technique can be used in regular BFS(here, the nodes are processed only once) too, by setting the level once and then skipping the nodes whose level isn't INF.
 
@@ -3616,6 +3651,29 @@ int main() {
     cout << bfs(g, lev, n) << " ";
     return 0;
 }
+```
+
+### Multi Source BFS: Starting the BFS from multiple source nodes
+
+- Multi-source BFS basically gives us the idea that if we start from multiple sources at once then which one will lead us to our destination first and its then marked visited ofcourse.
+
+- We basically put all the sources into the queue all at once and run the BFS.
+
+- Why it works?
+
+  - When we put multiple sources into the queue and initialize them with level = 0, then all the nodes other
+    than the sources would be reached by the ones already in the queue and will be marked as level = 1 and so on.
+
+  - Even if a node was visitable by a source node but was at a farther distance/level it won't be visited again, because that node would already have been marked visited/the level would be set to 1 which won't allow other farther source nodes to intefere.
+
+- Examples could include the following:
+  1. Reaching at the destination node in shortest time.
+  2. Which node could lead us to the destination node faster.
+  3. Finding the shortest time to reach a node when started with multiple nodes.
+  4. Questions could be on simultaneity of a situation, i.e., the values increase/decrease/change simultaneously in a grid.
+
+```cpp
+
 ```
 
 ## Dynamic Programming
