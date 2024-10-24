@@ -1925,7 +1925,7 @@ int main() {
 }
 ```
 
-## Binary Search(Works for sorted array only)
+## Binary Search(Works for sorted arrays, monotonic and predicate functions)
 
 0. Binary Search
    - Time Complexity: O(log(n))
@@ -1954,6 +1954,16 @@ int main(){
     return -1;
 }
 ```
+
+### Monotonic functions
+
+- Functions which are either increasing or decreasing and NOT both.
+
+### Predicate Functions
+
+- Functions which return a `boolean` and change the nature once at a point.
+- Example:
+  - Suppose some function is in a given range x<sub>1</sub> to x<sub>2</sub> and suppose there's a point x<sub>0</sub>, in the range x<sub>1</sub> to x<sub>2</sub>, then if the function returns just `true` till x<sub>0</sub> and then returns `false` after it or vice-versa is called a predicate function.
 
 1. Floor of a number
    - It's the largest number less than or equal to the given target.
@@ -2082,6 +2092,93 @@ int main() {
 
     return 0;
 }
+```
+
+### Advance Binary Search Problems/Binary Search on Answers
+
+- Here we will use the concept of predicate function and monotonic functions.
+- We create an `is_possible` predicate function which gives us a `bool` as an output till a certain point and reverses it's nature for the remaining range, i.e., `true` for a given range and then `false` for the remaining range or vice-versa.
+- `start = mid+1` or `end = mid-1` is set accordingly if we want to find the first `true` value or the first `false` value or the last `true` value or the last `false` value, depending on the question.
+
+0. Finding square root of a number
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+private:
+    bool is_possible(long long int x, long long int mid) {
+        return mid * mid <= x;
+    }
+
+public:
+    int mySqrt(int x) {
+        long long int ans = -1;
+        long long int start = 0;
+        long long int end = x;
+        while (start <= end) {
+            long long int mid = start + (end - start) / 2;
+
+            if (is_possible(x, mid)) {
+                ans = mid;
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+        }
+        return ans;
+    }
+};
+
+int main() {
+
+
+    return 0;
+}
+```
+
+1. [Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/)
+
+```cpp
+class Solution {
+private:
+    bool is_possible(vector<int>& piles, int h, int mid) {
+        int n = piles.size();
+        for (int i = 0; i < n; i++) {
+            if (mid >= piles[i]) {
+                h--;
+            } else {
+                if (piles[i] % mid == 0) {
+                    h -= piles[i] / mid;
+                } else {
+                    h -= (piles[i] / mid) + 1;
+                }
+            }
+        }
+
+        return h>=0;
+    }
+
+public:
+    int minEatingSpeed(vector<int>& piles, int h) {
+        int start = 1;
+        int end = *max_element(piles.begin(), piles.end());
+        int ans = -1;
+        while(start<=end){
+            int mid = start + (end-start)/2;
+
+            if(is_possible(piles, h, mid)){
+                ans = mid;
+                end = mid-1;
+            }else{
+                start = mid+1;
+            }
+        }
+
+        return ans;
+    }
+};
 ```
 
 ## Two Pointer and Sliding Window
