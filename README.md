@@ -493,6 +493,7 @@ int main() {
 ## Ordered, Unordered and Multi Sets
 
 - size: to get the size of sets and maps(ordered, unordered and multi)
+- Use them whenever you need to remove duplicate(or some form of duplicacy) elements.
 
 ### Ordered Sets : Accessing, Deletion and Insertion Time Complexity is O(logN)
 
@@ -2233,20 +2234,19 @@ int main() {
 
 ```cpp
  int findKthPositive(vector<int>& v, int k) {
-        int left = 0, right = v.size() - 1;
+        int start = 0, end = v.size() - 1;
 
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
             int missing = v[mid] - (mid + 1);
 
             if (missing < k) {
-                left = mid + 1;
+                start = mid + 1;
             } else {
-                right = mid - 1;
+                end = mid - 1;
             }
         }
-
-        return left + k;
+        return start + k;
     }
 ```
 
