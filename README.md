@@ -2386,12 +2386,13 @@ This preserves the actual state of the recursion and allows us to traverse throu
 
 - Return true or false if you need to break the recursion after the condition is once satisfied. Return true for satisified conditions else return false.
 
-1. Unique Elements in an array: Use the take/not-take technique, no for loop and terminate the recursion using the base case yourself.
+1. Unique Elements in an array: Use the `take/not-take technique`, no `for loop` will be required and terminate the recursion using the base case/termination conditions yourself.
 
+   - Entirely Based on `take/not-take` technique: [Generate all binary strings](#generate-all-binary-strings)
    - [Taking the same element unlimited number of times](#combination-sum-taking-the-same-element-multiple-times)
    - [Taking the element only once](#combination-sum-variation-taking-an-element-just-once)
 
-2. Duplicate Elements in an array: Sort the array, use the for loop and inside it put the recursion, for loop will automatically do the take/not-take and will implicitly terminate so we don't necessarily need a base case to terminate the recursion rather terminate when the conditions are satisfied.
+2. Duplicate Elements in an array: Sort the array first, use the `for loop` and inside it put the recursion, `for loop` will automatically do the `take/not-take` and will implicitly terminate so we don't necessarily need a base case to terminate the recursion rather terminate when the conditions are satisfied.
 
    - [Taking the element only once and skipping the duplicates](#combination-sum-ii-taking-an-element-just-once)
    - Take an element unlimited number of times
@@ -2399,7 +2400,54 @@ This preserves the actual state of the recursion and allows us to traverse throu
 
 3. Permutations: We use the for loop method because of the variable number of choices to start with and put the recursion inside the for loop which eventually picks up the elements provided the same element hasn't been picked already. If there are duplicate elements use the way taught in [Combination Sum II](#combination-sum-ii-taking-an-element-just-once) and add the `f[i-1]==0` along with it.
 
-### Combination Sum: Taking the same element multiple times
+### [Generate all binary strings](https://www.geeksforgeeks.org/problems/generate-all-binary-strings/0)
+
+```cpp
+class Solution{
+private:
+    void fn(int n, int i, string &ds, vector<string>&ans){
+        if(i==n){
+            ans.push_back(ds);
+            return;
+        }
+
+
+        if(i>0 && ds[i-1]=='0'){
+            ds.push_back('0');
+            fn(n, i+1, ds, ans);
+            ds.pop_back();
+
+            ds.push_back('1');
+            fn(n, i+1, ds, ans);
+            ds.pop_back();
+
+        }else if(i>0 && ds[i-1]=='1'){
+            ds.push_back('0');
+            fn(n, i+1, ds, ans);
+            ds.pop_back();
+        }
+    }
+public:
+    vector<string> generateBinaryStrings(int num){
+        vector<string> ans;
+        string ds;
+
+        ds.push_back('0');
+        fn(num, 1, ds, ans);
+        ds.pop_back();
+
+        ds.push_back('1');
+        fn(num, 1, ds, ans);
+        ds.pop_back();
+
+
+
+        return ans;
+    }
+};
+```
+
+### [Combination Sum: Taking the same element multiple times](https://leetcode.com/problems/combination-sum/)
 
 - Remember this pattern that when we have to pick elements from an array which consists of unique elements then we use the `pick/not-pick` method without the for loop!
 
@@ -2518,7 +2566,7 @@ public:
 };
 ```
 
-### Combination sum II: Taking an element just once!
+### [Combination sum II: Taking an element just once!](https://leetcode.com/problems/combination-sum-ii/description/)
 
 - First sort the original array.
 
@@ -2572,7 +2620,7 @@ int main() {
 
 - We stop when the target becomes 0, that means we got the answer and we either store it or print it. To check for the duplicate elements we resort back to the for loop and `if(i>ind && v[i]==v[i-1])` we skip that iteration, if the target becomes negative/ `v[i]>target` we can `break/return` the/from the loop.
 
-### Subsets I: Printing the subsets of an array with unique elements
+### [Subsets I: Printing the subsets of an array with unique elements](https://leetcode.com/problems/subsets/description/)
 
 - Similar to Combination Sum I
 
@@ -2613,7 +2661,7 @@ int main() {
 }
 ```
 
-### Subsets II: Ignoring the dupilcates and printing all the subsets
+### [Subsets II: Ignoring the dupilcates and printing all the subsets](https://leetcode.com/problems/subsets-ii/description/)
 
 - Similar to Combination Sum II
 
@@ -2658,7 +2706,7 @@ int main() {
 
 ```
 
-### Permutations I: Array has unique elements
+### [Permutations I: Array has unique elements](https://leetcode.com/problems/permutations/description/)
 
 - Approach 1
   - We go until we have all the elements in the data structure.
@@ -2710,7 +2758,7 @@ int main() {
 
 ```
 
-### Permutations II: Skipping the duplicate elements
+### [Permutations II: Skipping the duplicate elements](https://leetcode.com/problems/permutations-ii/description/)
 
 - We skip it just like we did it in Subets II and Combination Sum II.
 
