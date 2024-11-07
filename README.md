@@ -2301,25 +2301,25 @@ int main() {
 
 - It breaks large problems into smaller ones, and once we devise a solution for the smaller one then it eventually adds upto the solution of large problems.
 - To explore all the possibilities &rarr; use recursion.
-- Count the number of ways.
-- Multiple ways of doing something, then minimum or maximum number of ways are asked.
+- To count the number of ways.
+- If there are multiple ways of doing something, then minimum or maximum number of ways are asked.
 
 - Try to write the function in its own terms.
   For example : digit_sum(num)
 
-  Let's say, num = 1234.
+  - `digit_sum(num) = last_digit + digit_sum(num_with_its_last_digit_removed);`
 
-  `digit_sum(num) = last_digit + digit_sum(num_with_its_last_digit_removed);`
+    Let's say, num = 1234.
 
-  digit_sum(1234) = 4 + digit_sum(123);
+    digit_sum(1234) = 4 + digit_sum(123);
 
-  digit_sum(123) = 3 + digit_sum(12);
+    digit_sum(123) = 3 + digit_sum(12);
 
-  digit_sum(12) = 2 + digit_sum(1);
+    digit_sum(12) = 2 + digit_sum(1);
 
-  digit_sum(1) = 1 + digit_sum(0);
+    digit_sum(1) = 1 + digit_sum(0);
 
-  digit_sum(0) = 0; -> base condition to terminate.
+    digit_sum(0) = 0; -> base condition to terminate.
 
 Hence, `digit_sum(num) = (num%10) + digit_sum(num/10)` -> from the above pattern.
 
@@ -2376,27 +2376,28 @@ This preserves the actual state of the recursion and allows us to traverse throu
 
 - `It's nothing different from recursion, just a fancy name.`
 
-## Patterns In Recursion
+## Some important pointers to remember while writing recursive functions
 
-- Variable number of recursive calls at a level &rarr; use for loop and put the recursion inside it.
+- Variable number of recursive calls at a single level &rarr; use `for loop` and put the recursion inside it.
 
 - Use the `void` return type to explore all the possibilities.
 
-- Return 1 or 0 if you want to count then add all the recursive calls and return it. Return 0 when the condition isn't satisified and if it's satisified return 1.
+- Return `1` or `0` if you want to count then add all the recursive calls and return them. Return `0` when the condition isn't satisified and if it's satisified return `1`.
 
-- Return true or false if you need to break the recursion after the condition is once satisfied. Return true for satisified conditions else return false.
+- Return `true` or `false` if you need to break the recursion after the condition is `once satisfied`. Return `true` for satisified conditions else return `false`.
+
+## Patterns In Recursion
 
 1. Unique Elements in an array: Use the `take/not-take technique`, no `for loop` will be required and terminate the recursion using the base case/termination conditions yourself.
 
    - Entirely Based on `take/not-take` technique: [Generate all binary strings](#generate-all-binary-strings)
    - [Taking the same element unlimited number of times](#combination-sum-taking-the-same-element-multiple-times)
-   - [Taking the element only once](#combination-sum-variation-taking-an-element-just-once)
+   - [Taking an element only once](#combination-sum-variation-taking-an-element-just-once)
 
-2. Duplicate Elements in an array: Sort the array first, use the `for loop` and inside it put the recursion, `for loop` will automatically do the `take/not-take` and will implicitly terminate so we don't necessarily need a base case to terminate the recursion rather terminate when the conditions are satisfied.
+2. Duplicate Elements in an array: Sort the array first, use the `for loop` and inside it put the recursion, `for loop` will automatically do the `take/not-take` and will implicitly terminate(when `for loop` condition will eventually be unsatisfied), so we don't necessarily need a base case to terminate the recursion for preventing stack overflow because of infinite loop condition, rather terminate it when the conditions are satisfied.
 
    - [Taking the element only once and skipping the duplicates](#combination-sum-ii-taking-an-element-just-once)
-   - Take an element unlimited number of times
-     Remove the duplicate ones and solve it like [Combination Sum I](#combination-sum-taking-the-same-element-multiple-times)
+   - Take an element unlimited number of times then simply remove the duplicate ones and solve it like [Combination Sum I](#combination-sum-taking-the-same-element-multiple-times)
 
 3. Permutations: We use the for loop method because of the variable number of choices to start with and put the recursion inside the for loop which eventually picks up the elements provided the same element hasn't been picked already. If there are duplicate elements use the way taught in [Combination Sum II](#combination-sum-ii-taking-an-element-just-once) and add the `f[i-1]==0` along with it.
 
@@ -2411,17 +2412,19 @@ private:
             return;
         }
 
-
         if(i>0 && ds[i-1]=='0'){
+            // take '0'
             ds.push_back('0');
             fn(n, i+1, ds, ans);
             ds.pop_back();
 
+            // not take '0', i.e., take '1'
             ds.push_back('1');
             fn(n, i+1, ds, ans);
             ds.pop_back();
 
         }else if(i>0 && ds[i-1]=='1'){
+            // cannot take '1' due to constraints
             ds.push_back('0');
             fn(n, i+1, ds, ans);
             ds.pop_back();
@@ -2432,10 +2435,12 @@ public:
         vector<string> ans;
         string ds;
 
+        // take '0'
         ds.push_back('0');
         fn(num, 1, ds, ans);
         ds.pop_back();
 
+        // not take '0', i.e., take '1'
         ds.push_back('1');
         fn(num, 1, ds, ans);
         ds.pop_back();
@@ -2449,7 +2454,7 @@ public:
 
 ### [Combination Sum: Taking the same element multiple times](https://leetcode.com/problems/combination-sum/)
 
-- Remember this pattern that when we have to pick elements from an array which consists of unique elements then we use the `pick/not-pick` method without the for loop!
+- Remember this pattern that when we have to pick elements from an array which consists of unique elements then we use the `pick/not-pick` method without the `for loop`!
 
 ```cpp
 class Solution {
@@ -2485,7 +2490,7 @@ public:
 };
 ```
 
-- In the above question we stop when the target becomes negative, i.e, we can take the elements as many times as we want but if the target becomes negative we stop because then no combination of it would sum upto target.
+- In the above question we stop when the target becomes negative, i.e, we can take the elements as many times as we want but if the target becomes negative we stop because then no combination of it would sum upto the target.
 
 ### Combination Sum Variation: Taking an element just once
 
@@ -2533,7 +2538,7 @@ class Solution {
 private:
     void fn(vector<int>&v, int target, int k,int i, vector<int>&ds, vector<vector<int>>&ans){
         if(target<0) return;
-        // no need of  the above condition, as if target even becomes negative recursion will eventually stop as we are not taking the same element multiple times hence the third condition of if(i>=v.size()) will save us eventually unlike Combination Sum I.
+        // no need of  the above condition, because if the target even becomes negative then also recursion will eventually stop as we are not taking the same element multiple times hence the third condition of if(i>=v.size()) will save us eventually unlike Combination Sum I.
 
         if(ds.size()==k){
             if(target==0){
@@ -2570,9 +2575,9 @@ public:
 
 - First sort the original array.
 
-- Remember this pattern, where when we have to choose `non-duplicate` elements from an array having duplicate elements ofcourse, then we use for loop along with the `pick/not-pick` technique and put the recursion inside it, as done below.
+- Remember this pattern, where when we have to choose `non-duplicate` elements from an array having duplicate elements ofcourse, then we use `for loop` along with the `pick/not-pick` technique and put the recursion inside it, as done below.
 
-- `No explicit base condition`(like ind>=n) because the for loop does it implicitly anyway.
+- `No explicit base condition`(like ind>=n) because the `for loop` does it implicitly anyway.
 
 ```cpp
 #include <bits/stdc++.h>
@@ -2665,7 +2670,7 @@ int main() {
 
 - Similar to Combination Sum II
 
-- Here we don't need fully formed subsets till `n` rather we want all the unique subsets, that's why `no explicit base condition` because the for loop does it implicitly anyway.
+- Here we don't need fully formed subsets till `n` rather we want all the unique subsets, that's why `no explicit base condition` because the `for loop` does it implicitly anyway.
 
 ```cpp
 #include <bits/stdc++.h>
@@ -2798,6 +2803,56 @@ int main() {
     return 0;
 }
 ```
+
+## Some Miscellaneous Questions
+
+1. [Letter Combinations of a Phone Number](https://leetcode.com/problems/letter-combinations-of-a-phone-number/description/)
+
+- Since there are multiple/variable(depending on the size of vector) recursive calls hence we need to use a `for loop` and put the recursion inside it.
+
+```cpp
+class Solution {
+private:
+    void fn(string &s, int i, string &ds, vector<string>&ans, unordered_map<int, vector<char>> &m){
+        if(i>=s.size()){
+            ans.push_back(ds);
+            return;
+        }
+
+        int digit = s[i] - '0';
+
+        for(int j=0; j<m[digit].size(); j++){
+            ds.push_back(m[digit][j]);
+            fn(s, i+1, ds, ans, m);
+            ds.pop_back();
+        }
+    }
+
+public:
+    vector<string> letterCombinations(string &s) {
+        if(s.size()==0) return {};
+        unordered_map<int, vector<char>> m;
+        m[2] = {'a', 'b', 'c'};
+        m[3] = {'d', 'e', 'f'};
+        m[4] = {'g', 'h', 'i'};
+        m[5] = {'j', 'k', 'l'};
+        m[6] = {'m', 'n', 'o'};
+        m[7] = {'p', 'q', 'r', 's'};
+        m[8] = {'t', 'u', 'v'};
+        m[9] = {'w', 'x', 'y', 'z'};
+
+        vector<string> ans;
+        string ds;
+        fn(s, 0, ds, ans, m);
+
+        return ans;
+    }
+};
+```
+
+- `unordered_map` has been used to reduce Time Complexity to O(1) on an average.
+
+- Extract the digit, get the vector using the map and simply push it into the `ds` string to get the combinations and since `ds` has been passed on using reference hence backtrack to maintain recursive state.
 
 ## Graphs : Contd. after the Java notes, but in C++
 
