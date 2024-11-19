@@ -2806,6 +2806,75 @@ int main() {
 
 ## Some Miscellaneous Questions
 
+0. [Reverse a stack using recursion](https://www.geeksforgeeks.org/problems/reverse-a-stack/1)
+
+- Note: Using IBH technique taught by Aditya Verma THE MAN
+- Recursive function wo kaam kar dega tum toh ye socho ki kaise sambhaloge use.
+
+```cpp
+class Solution{
+private:
+    void insert_at_bottom(stack<int> &st, int el){
+            if(st.empty()){
+                st.push(el);
+                return;
+            }
+
+            int top = st.top();
+            st.pop();
+            insert_at_bottom(st, el); // le daal diya bottom pe
+            st.push(top); // hai himmat? hai himmat sambhaalne ki?
+    }
+
+    void reverse(stack<int> &st){
+        if(st.empty()){
+            return;
+        }
+
+        int top = st.top();
+        st.pop();
+        reverse(st); // kam kar diya
+        insert_at_bottom(st, top); // sambhaal bsdk
+    }
+public:
+    void Reverse(stack<int> &st){
+        reverse(st);
+    }
+};
+```
+
+0.1. [Count Good Numbers](https://leetcode.com/problems/count-good-numbers/)
+
+- Focus on how modulo is being handled in this question, baaki toh maths hai 11th ki(PnC).
+
+```cpp
+int m = (1e9+7);
+
+class Solution {
+private:
+    int power(long long int a, long long b){
+        if(a==1) return 1; // agar base hi 1 hai toh execute hi mat karo aage
+
+        if(b==0){
+            return 1; // kisi ki power zero toh 1
+        }
+
+        int temp = power(a, b/2)%m;
+        if(b%2==0){
+            return (1LL*temp*temp)%m;
+        }
+
+       return (1LL*a*temp*temp)%m;
+    }
+public:
+    int countGoodNumbers(long long n) {
+        long long int even = ceil(n/2.0);
+        long long int odd = n/2;
+        return ((1LL * power(5, even))%m * (1LL * power(4, odd))%m)%m;
+    }
+};
+```
+
 1. [Letter Combinations of a Phone Number](https://leetcode.com/problems/letter-combinations-of-a-phone-number/description/)
 
 - Since there are multiple/variable(depending on the size of vector) recursive calls hence we need to use a `for loop` and put the recursion inside it.
