@@ -2923,6 +2923,31 @@ public:
 
 - Extract the digit, get the vector using the map and simply push it into the `ds` string to get the combinations and since `ds` has been passed on using reference hence backtrack to maintain recursive state.
 
+2. [Nim Game](https://leetcode.com/problems/nim-game/description/)
+
+- To win, the other has to lose in every scenario.
+
+```cpp
+class Solution {
+private:
+    bool fn(int n, int me){
+         if (n == 1 || n == 2 || n == 3)
+            return me;
+        if (me) {
+            return fn(n - 1, !me) || fn(n - 2, !me) || fn(n - 3, !me);
+        } else { // important
+            return fn(n - 1, !me) && fn(n - 2, !me) && fn(n - 3, !me);
+        }
+    }
+public:
+    bool canWinNim(int n) {
+        // bool me = true;
+        // return fn(n, me);
+        return n % 4 != 0;
+    }
+};
+```
+
 ## Graphs : Contd. after the Java notes, but in C++
 
 ### What is a graph?
