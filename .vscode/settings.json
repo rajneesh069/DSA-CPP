@@ -1,13 +1,4 @@
 {
-    "files.associations": {
-        "ostream": "cpp",
-        "functional": "cpp",
-        "iostream": "cpp",
-        "deque": "cpp",
-        "string": "cpp",
-        "vector": "cpp",
-        "cmath": "cpp",
-        "complex": "cpp",
-        "cstdlib": "cpp"
-    }
+    "C_Cpp.errorSquiggles": "disabled",
+    "C_Cpp.default.compilerPath": "C:/msys64/ucrt64/bin/gcc.exe"
 }
