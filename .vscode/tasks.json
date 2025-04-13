@@ -1,22 +1,22 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-      {
-        "label": "Build and Run C++",
-        "type": "shell",
-        "command": "bash",
-        "args": [
-          "-c",
-          "g++ -o main CP/main.cpp && ./main < CP/input.txt > CP/output.txt"
-        ],
-        "group": {
-          "kind": "build",
-          "isDefault": true
-        },
-        "options": {
-          "cwd": "${workspaceFolder}"
-        },
-        "problemMatcher": []
-      }
-    ]
-  }
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build and Run C++",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "g++ -o main.exe CP/main.cpp && ./main.exe < CP/input.txt > CP/output.txt"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

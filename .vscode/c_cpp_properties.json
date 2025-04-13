@@ -3,16 +3,16 @@
         {
             "name": "Win32",
             "includePath": [
-                "${default}"
+                "${workspaceFolder}/**",
+                "C:/msys64/ucrt64/include",
+                "C:/msys64/ucrt64/include/c++/14.2.0",
+                "C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32",
+                "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\14.2.0\\include"
             ],
-            "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE"
-            ],
-            "windowsSdkVersion": "10.0.19041.0",
-            "compilerPath": "C:/msys64/ucrt64/bin/gcc.exe",
-            "intelliSenseMode": "${default}"
+            "intelliSenseMode": "windows-gcc-x64",
+            "compilerPath": "C:/msys64/ucrt64/bin/g++.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++14"
         }
     ],
     "version": 4
